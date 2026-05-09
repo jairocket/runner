@@ -1,4 +1,4 @@
-package com.example.runner.ui.history
+package com.runner.ui.history
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.example.runner.R
-import com.example.runner.databinding.FragmentSecondBinding
+import com.runner.R
+import com.runner.databinding.FragmentSecondBinding
 
 class HistoryFragment : Fragment() {
 

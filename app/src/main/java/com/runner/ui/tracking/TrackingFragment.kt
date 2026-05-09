@@ -1,4 +1,4 @@
-package com.example.runner.ui.tracking
+package com.runner.ui.tracking
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.runner.R
-import com.example.runner.databinding.FragmentFirstBinding
+import com.runner.R
+import com.runner.databinding.FragmentFirstBinding
 
 class TrackingFragment : Fragment() {
 

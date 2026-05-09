@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace = "com.example.runner"
+    namespace = "com.runner"
     compileSdk {
         version = release(36)
     }
 
     defaultConfig {
-        applicationId = "com.example.runner"
+        applicationId = "com.runner"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

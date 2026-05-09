@@ -1,4 +1,4 @@
-package com.example.runner.ui.tracking
+package com.runner.ui.tracking
 
 import android.location.Location
 import android.widget.Button
@@ -11,7 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.runner.R
+import com.runner.R
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

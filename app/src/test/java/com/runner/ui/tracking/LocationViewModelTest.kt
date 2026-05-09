@@ -1,4 +1,4 @@
-package com.example.runner.ui.tracking
+package com.runner.ui.tracking
 
 import android.location.Location
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule

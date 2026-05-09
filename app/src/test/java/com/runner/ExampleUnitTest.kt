@@ -1,4 +1,4 @@
-package com.example.runner
+package com.runner
 
 import org.junit.Test
 

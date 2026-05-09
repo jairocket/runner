@@ -7,7 +7,7 @@
 
     <fragment
             android:id="@+id/TrackingFragment"
-            android:name="com.example.runner.ui.tracking.TrackingFragment"
+            android:name="com.runner.ui.tracking.TrackingFragment"
             android:label="@string/first_fragment_label"
             tools:layout="@layout/fragment_first">
 
@@ -17,7 +17,7 @@
     </fragment>
     <fragment
             android:id="@+id/HistoryFragment"
-            android:name="com.example.runner.ui.history.HistoryFragment"
+            android:name="com.runner.ui.history.HistoryFragment"
             android:label="@string/second_fragment_label"
             tools:layout="@layout/fragment_second">
 

@@ -1,4 +1,4 @@
-package com.example.runner
+package com.runner
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,7 +7,7 @@ import android.os.Looper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import com.example.runner.ui.tracking.LocationViewModel
+import com.runner.ui.tracking.LocationViewModel
 import com.google.android.gms.location.*
 
 class MainActivity : AppCompatActivity() {
@@ -61,9 +61,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Para economizar bateria, paramos o tracking quando o app fecha
+    override fun onResume() {
+        super.onResume()
+        checkPermissionsAndStart()
+    }
+
     override fun onPause() {
         super.onPause()
         fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1 && grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
+            startTracking()
+        }
     }
 }
