@@ -7,17 +7,21 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 ./gradlew build                  # Build debug + release APKs
 ./gradlew assembleDebug          # Build debug APK only
-./gradlew test                   # Run unit tests
-./gradlew testDebugUnitTest      # Run a single test variant
 ./gradlew connectedAndroidTest   # Run instrumented tests on a device/emulator
 ./gradlew clean                  # Clean build artifacts
 ./gradlew lint                   # Run Android lint checks
 ```
 
-To run a single test class:
+### Running unit tests
+
+Unit tests use Robolectric 4.11.1, which requires **Java 21**. The system default may be a different version. Always use `run_tests.sh` instead of calling Gradle directly:
+
 ```bash
-./gradlew test --tests "com.example.runner.ExampleUnitTest"
+./run_tests.sh                                                                    # all unit tests
+./run_tests.sh --tests "com.example.runner.ui.tracking.LocationViewModelTest"     # single class
 ```
+
+The script switches to Java 21 via sdkman (`21.0.6-tem`) and stops any running Gradle daemon before running tests, ensuring Robolectric picks up the correct JVM. Running `./gradlew testDebugUnitTest` directly will fail if the active Java version is 25 or higher.
 
 ## Architecture
 
