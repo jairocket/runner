@@ -3,26 +3,26 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_graph"
-            app:startDestination="@id/FirstFragment">
+            app:startDestination="@id/TrackingFragment">
 
     <fragment
-            android:id="@+id/FirstFragment"
-            android:name="com.example.runner.FirstFragment"
+            android:id="@+id/TrackingFragment"
+            android:name="com.example.runner.ui.tracking.TrackingFragment"
             android:label="@string/first_fragment_label"
             tools:layout="@layout/fragment_first">
 
         <action
-                android:id="@+id/action_FirstFragment_to_SecondFragment"
-                app:destination="@id/SecondFragment"/>
+                android:id="@+id/action_TrackingFragment_to_HistoryFragment"
+                app:destination="@id/HistoryFragment"/>
     </fragment>
     <fragment
-            android:id="@+id/SecondFragment"
-            android:name="com.example.runner.SecondFragment"
+            android:id="@+id/HistoryFragment"
+            android:name="com.example.runner.ui.history.HistoryFragment"
             android:label="@string/second_fragment_label"
             tools:layout="@layout/fragment_second">
 
         <action
-                android:id="@+id/action_SecondFragment_to_FirstFragment"
-                app:destination="@id/FirstFragment"/>
+                android:id="@+id/action_HistoryFragment_to_TrackingFragment"
+                app:destination="@id/TrackingFragment"/>
     </fragment>
 </navigation>

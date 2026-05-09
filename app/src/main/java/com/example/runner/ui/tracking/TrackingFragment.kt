@@ -1,20 +1,19 @@
 package com.example.runner.ui.tracking
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.runner.R
 import com.example.runner.databinding.FragmentFirstBinding
 
-class TrackingFragment: Fragment() {
+class TrackingFragment : Fragment() {
+
     private var _binding: FragmentFirstBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private val locationViewModel: LocationViewModel by activityViewModels()
@@ -23,10 +22,8 @@ class TrackingFragment: Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +41,7 @@ class TrackingFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            findNavController().navigate(R.id.action_TrackingFragment_to_HistoryFragment)
         }
     }
 
@@ -53,4 +50,3 @@ class TrackingFragment: Fragment() {
         _binding = null
     }
 }
-
