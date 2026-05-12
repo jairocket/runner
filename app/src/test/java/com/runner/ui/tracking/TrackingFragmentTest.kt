@@ -1,18 +1,18 @@
 package com.runner.ui.tracking
 
-import android.location.Location
-import android.widget.Button
+import android.view.View
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.google.android.material.button.MaterialButton
 import com.runner.R
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,55 +25,62 @@ class TrackingFragmentTest {
     @get:Rule
     val instantTaskRule = InstantTaskExecutorRule()
 
-    @Test
-    fun textView_initialState_showsAwaitingGps() {
-        val scenario = launchFragmentInContainer<TrackingFragment>()
+    private fun launch() = launchFragmentInContainer<TrackingFragment>(
+        themeResId = R.style.Theme_Runner
+    )
 
+    @Test
+    fun timerDisplay_initialState_showsZero() {
+        val scenario = launch()
         scenario.onFragment { fragment ->
             val text = fragment.requireView()
-                .findViewById<TextView>(R.id.textview_first)
-                .text.toString()
-            assertEquals("Aguardando GPS...", text)
+                .findViewById<TextView>(R.id.textTimerDisplay).text.toString()
+            assertEquals("00:00:00", text)
         }
     }
 
     @Test
-    fun textView_whenLocationPosted_displaysFormattedData() {
-        val location = Location("test").apply {
-            latitude = 10.0
-            longitude = 20.0
-            speed = 5.0f
-            time = 1000L
-        }
-
-        val scenario = launchFragmentInContainer<TrackingFragment>()
-
-        scenario.onFragment { fragment ->
-            val viewModel = ViewModelProvider(fragment.requireActivity())[LocationViewModel::class.java]
-            viewModel.locationLiveData.value = location
-        }
-
+    fun paceValue_initialState_showsPlaceholder() {
+        val scenario = launch()
         scenario.onFragment { fragment ->
             val text = fragment.requireView()
-                .findViewById<TextView>(R.id.textview_first)
-                .text.toString()
-            val expected = buildString {
-                append(location.latitude.toString())
-                append(" ")
-                append(location.longitude.toString())
-                append("\n")
-                append(location.speed.toString())
-                append("\n")
-                append(location.time.toString())
-            }
-            assertEquals(expected, text)
+                .findViewById<TextView>(R.id.textPaceValue).text.toString()
+            assertEquals("--:--", text)
         }
     }
 
     @Test
-    fun button_onClick_navigatesToHistoryFragment() {
+    fun distanceValue_initialState_showsZero() {
+        val scenario = launch()
+        scenario.onFragment { fragment ->
+            val text = fragment.requireView()
+                .findViewById<TextView>(R.id.textDistanceValue).text.toString()
+            assertEquals("0.00", text)
+        }
+    }
+
+    @Test
+    fun startButton_initialState_isEnabled() {
+        val scenario = launch()
+        scenario.onFragment { fragment ->
+            val btn = fragment.requireView().findViewById<MaterialButton>(R.id.buttonStart)
+            assertTrue(btn.isEnabled)
+        }
+    }
+
+    @Test
+    fun stopButton_initialState_isHidden() {
+        val scenario = launch()
+        scenario.onFragment { fragment ->
+            val btn = fragment.requireView().findViewById<MaterialButton>(R.id.buttonStop)
+            assertEquals(View.GONE, btn.visibility)
+        }
+    }
+
+    @Test
+    fun historyLink_onClick_navigatesToHistoryFragment() {
         val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        val scenario = launchFragmentInContainer<TrackingFragment>()
+        val scenario = launch()
 
         scenario.onFragment { fragment ->
             navController.setGraph(R.navigation.nav_graph)
@@ -82,7 +89,7 @@ class TrackingFragmentTest {
 
         scenario.onFragment { fragment ->
             fragment.requireView()
-                .findViewById<Button>(R.id.button_first)
+                .findViewById<TextView>(R.id.textButtonHistory)
                 .performClick()
         }
 
@@ -91,8 +98,7 @@ class TrackingFragmentTest {
 
     @Test
     fun binding_onDestroyView_doesNotLeak() {
-        val scenario = launchFragmentInContainer<TrackingFragment>()
-        // If onDestroyView properly nullifies _binding, moving to DESTROYED throws no exception
+        val scenario = launch()
         scenario.moveToState(Lifecycle.State.DESTROYED)
     }
 }

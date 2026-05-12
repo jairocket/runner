@@ -9,7 +9,7 @@
             android:id="@+id/TrackingFragment"
             android:name="com.runner.ui.tracking.TrackingFragment"
             android:label="@string/first_fragment_label"
-            tools:layout="@layout/fragment_first">
+            tools:layout="@layout/fragment_tracking">
 
         <action
                 android:id="@+id/action_TrackingFragment_to_HistoryFragment"

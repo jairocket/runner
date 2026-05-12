@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorBackground"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    tools:context=".ui.tracking.TrackingFragment">
+
+    <!-- Header: logo + status indicator -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingTop="40dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="RUNNER"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="18sp"
+            android:letterSpacing="0.3"
+            android:fontFamily="sans-serif-condensed"/>
+
+        <View
+            android:id="@+id/viewStatusDot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="7dp"
+            android:background="@drawable/bg_circle"
+            android:backgroundTint="@color/colorStatusIdle"/>
+
+        <TextView
+            android:id="@+id/textStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IDLE"
+            android:textColor="@color/colorTextMuted"
+            android:textSize="9sp"
+            android:letterSpacing="0.22"
+            android:fontFamily="monospace"
+            tools:ignore="SmallSp"/>
+
+    </LinearLayout>
+
+    <!-- Timer: fills remaining vertical space, content centered -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TIME ELAPSED"
+            android:textColor="@color/colorTextMuted"
+            android:textSize="9sp"
+            android:letterSpacing="0.35"
+            android:fontFamily="monospace"
+            android:layout_marginBottom="4dp"
+            tools:ignore="SmallSp"/>
+
+        <TextView
+            android:id="@+id/textTimerDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="00:00:00"
+            android:textColor="@color/colorTextPrimary"
+            android:textSize="64sp"
+            android:fontFamily="monospace"
+            android:includeFontPadding="false"/>
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider"/>
+
+    <!-- Metrics: pace | divider | distance -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Pace -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp">
+
+            <TextView
+                android:id="@+id/textPaceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--:--"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="48sp"
+                android:fontFamily="monospace"
+                android:includeFontPadding="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="min/km"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="10sp"
+                android:letterSpacing="0.18"
+                android:fontFamily="monospace"
+                android:layout_marginTop="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PACE"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="8sp"
+                android:letterSpacing="0.3"
+                android:layout_marginTop="3dp"
+                tools:ignore="SmallSp"/>
+
+        </LinearLayout>
+
+        <!-- Vertical divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:background="@color/colorDivider"/>
+
+        <!-- Distance -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp">
+
+            <TextView
+                android:id="@+id/textDistanceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.00"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="48sp"
+                android:fontFamily="monospace"
+                android:includeFontPadding="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="km"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="10sp"
+                android:letterSpacing="0.18"
+                android:fontFamily="monospace"
+                android:layout_marginTop="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DISTANCE"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="8sp"
+                android:letterSpacing="0.3"
+                android:layout_marginTop="3dp"
+                tools:ignore="SmallSp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorDivider"/>
+
+    <!-- Start + Resume row (hidden while running) -->
+    <LinearLayout
+        android:id="@+id/rowStartResume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonStart"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:text="▶  START"
+            android:textSize="15sp"
+            android:letterSpacing="0.12"
+            android:textColor="#000000"
+            app:backgroundTint="@color/colorAccentLime"
+            app:cornerRadius="2dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonResume"
+            android:layout_width="0dp"
+            android:layout_height="58dp"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:text="↺  RESUME"
+            android:textSize="15sp"
+            android:letterSpacing="0.12"
+            android:textColor="@color/colorAccentLime"
+            app:strokeColor="@color/colorAccentLime"
+            app:cornerRadius="2dp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+    <!-- Stop button (visible only while running) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonStop"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:text="■  STOP"
+        android:textSize="15sp"
+        android:letterSpacing="0.12"
+        android:textColor="@color/colorDanger"
+        app:strokeColor="@color/colorDanger"
+        app:cornerRadius="2dp"
+        android:visibility="gone"/>
+
+    <!-- Save button (visible only after a run is stopped) -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginBottom="12dp"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:text="SAVE"
+        android:textSize="15sp"
+        android:letterSpacing="0.12"
+        android:textColor="@color/colorTextPrimary"
+        app:strokeColor="@color/colorTextMuted"
+        app:cornerRadius="2dp"
+        android:visibility="gone"/>
+
+    <!-- History navigation link -->
+    <TextView
+        android:id="@+id/textButtonHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="HISTORY ›"
+        android:textColor="@color/colorTextMuted"
+        android:textSize="13sp"
+        android:letterSpacing="0.2"
+        android:fontFamily="monospace"
+        android:paddingTop="8dp"
+        android:paddingBottom="24dp"/>
+
+</LinearLayout>

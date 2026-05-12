@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             override fun onLocationResult(locationResult: LocationResult) {
                 for (location in locationResult.locations) {
                     // Aqui é onde a "mágica" do seu track app acontece
-                    locationViewModel.locationLiveData.value = location
+                    locationViewModel.updateLocation(location)
                 }
             }
         }
