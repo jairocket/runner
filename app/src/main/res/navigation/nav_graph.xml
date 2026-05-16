@@ -14,6 +14,10 @@
         <action
                 android:id="@+id/action_TrackingFragment_to_HistoryFragment"
                 app:destination="@id/HistoryFragment"/>
+
+        <action
+                android:id="@+id/action_TrackingFragment_to_MapFragment"
+                app:destination="@id/MapFragment"/>
     </fragment>
     <fragment
             android:id="@+id/HistoryFragment"
@@ -25,4 +29,9 @@
                 android:id="@+id/action_HistoryFragment_to_TrackingFragment"
                 app:destination="@id/TrackingFragment"/>
     </fragment>
+    <fragment
+            android:id="@+id/MapFragment"
+            android:name="com.runner.ui.map.MapFragment"
+            android:label="Map"
+            tools:layout="@layout/fragment_map"/>
 </navigation>

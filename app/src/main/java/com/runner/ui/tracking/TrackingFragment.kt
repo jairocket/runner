@@ -53,6 +53,9 @@ class TrackingFragment : Fragment() {
         binding.buttonStop.setOnClickListener { viewModel.stopTracking() }
         binding.buttonResume.setOnClickListener { viewModel.resumeTracking() }
         binding.buttonSave.setOnClickListener { viewModel.resetTimer() }
+        binding.textButtonMap.setOnClickListener {
+            findNavController().navigate(R.id.action_TrackingFragment_to_MapFragment)
+        }
         binding.textButtonHistory.setOnClickListener {
             findNavController().navigate(R.id.action_TrackingFragment_to_HistoryFragment)
         }

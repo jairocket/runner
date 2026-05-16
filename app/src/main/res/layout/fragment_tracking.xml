@@ -264,18 +264,38 @@
         app:cornerRadius="2dp"
         android:visibility="gone"/>
 
-    <!-- History navigation link -->
-    <TextView
-        android:id="@+id/textButtonHistory"
+    <!-- Bottom navigation links: MAP | HISTORY -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="HISTORY ›"
-        android:textColor="@color/colorTextMuted"
-        android:textSize="13sp"
-        android:letterSpacing="0.2"
-        android:fontFamily="monospace"
+        android:orientation="horizontal"
         android:paddingTop="8dp"
-        android:paddingBottom="24dp"/>
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/textButtonMap"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="&#8249; MAP"
+            android:textColor="@color/colorTextMuted"
+            android:textSize="13sp"
+            android:letterSpacing="0.2"
+            android:fontFamily="monospace"/>
+
+        <TextView
+            android:id="@+id/textButtonHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="HISTORY ›"
+            android:textColor="@color/colorTextMuted"
+            android:textSize="13sp"
+            android:letterSpacing="0.2"
+            android:fontFamily="monospace"/>
+
+    </LinearLayout>
 
 </LinearLayout>
