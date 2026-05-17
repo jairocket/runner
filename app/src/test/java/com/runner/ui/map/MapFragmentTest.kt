@@ -2,6 +2,7 @@ package com.runner.ui.map
 
 import android.location.Location
 import android.view.View
+import org.junit.Assert.assertTrue
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
@@ -54,5 +55,20 @@ class MapFragmentTest {
     @Test
     fun binding_onDestroyView_doesNotLeak() {
         launch().moveToState(Lifecycle.State.DESTROYED)
+    }
+
+    @Test
+    fun trajectorySaved_clearsRoutePolyline() {
+        launch().onFragment { fragment ->
+            val viewModel = ViewModelProvider(fragment.requireActivity())[LocationViewModel::class.java]
+            viewModel.startTracking()
+            viewModel.updateLocation(Location("test").apply {
+                latitude = 48.8566
+                longitude = 2.3522
+            })
+            viewModel.stopTracking()
+            viewModel.resetTimer()
+            assertTrue(fragment.routePolyline.points.isEmpty())
+        }
     }
 }

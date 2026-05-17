@@ -27,6 +27,9 @@ class LocationViewModel : ViewModel() {
     private val _paceSecPerKm = MutableLiveData<Double?>(null)
     val paceSecPerKm: LiveData<Double?> = _paceSecPerKm
 
+    private val _trajectorySaved = MutableLiveData<Unit>()
+    val trajectorySaved: LiveData<Unit> = _trajectorySaved
+
     private var lastLocation: Location? = null
     private var trackingStartMs = 0L
 
@@ -72,6 +75,8 @@ class LocationViewModel : ViewModel() {
         _elapsedSeconds.value = 0L
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
+        _locationHistory.clear()
+        _trajectorySaved.value = Unit
     }
 
     fun updateLocation(location: Location) {
