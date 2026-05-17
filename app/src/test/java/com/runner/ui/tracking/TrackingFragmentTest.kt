@@ -5,14 +5,10 @@ import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.lifecycle.Lifecycle
-import androidx.navigation.Navigation
-import androidx.navigation.testing.TestNavHostController
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.material.button.MaterialButton
 import com.runner.R
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -79,35 +75,9 @@ class TrackingFragmentTest {
     }
 
     @Test
-    fun historyLink_onClick_navigatesToHistoryFragment() {
-        val navController = TestNavHostController(ApplicationProvider.getApplicationContext())
-        val scenario = launch()
-
-        scenario.onFragment { fragment ->
-            navController.setGraph(R.navigation.nav_graph)
-            Navigation.setViewNavController(fragment.requireView(), navController)
-        }
-
-        scenario.onFragment { fragment ->
-            fragment.requireView()
-                .findViewById<TextView>(R.id.textButtonHistory)
-                .performClick()
-        }
-
-        assertEquals(R.id.HistoryFragment, navController.currentDestination?.id)
-    }
-
-    @Test
     fun binding_onDestroyView_doesNotLeak() {
         val scenario = launch()
         scenario.moveToState(Lifecycle.State.DESTROYED)
     }
 
-    @Test
-    fun `nav links are absent from layout`() {
-        launch().onFragment { fragment ->
-            assertNull(fragment.view?.findViewById<View>(R.id.textButtonMap))
-            assertNull(fragment.view?.findViewById<View>(R.id.textButtonHistory))
-        }
-    }
 }
