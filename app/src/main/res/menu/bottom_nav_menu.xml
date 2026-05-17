@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/TrackingFragment"
+        android:icon="@drawable/ic_nav_track"
+        android:title="Track"/>
+    <item
+        android:id="@+id/MapFragment"
+        android:icon="@drawable/ic_nav_map"
+        android:title="Map"/>
+    <item
+        android:id="@+id/HistoryFragment"
+        android:icon="@drawable/ic_nav_history"
+        android:title="History"/>
+</menu>

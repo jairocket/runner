@@ -9,4 +9,5 @@
     <color name="colorTextMuted">#8A8AA4</color>
     <color name="colorDivider">#1C1C22</color>
     <color name="colorStatusIdle">#3A3A46</color>
+    <color name="colorNavBar">#111118</color>
 </resources>

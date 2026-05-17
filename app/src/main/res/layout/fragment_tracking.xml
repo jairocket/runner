@@ -264,18 +264,5 @@
         app:cornerRadius="2dp"
         android:visibility="gone"/>
 
-    <!-- History navigation link -->
-    <TextView
-        android:id="@+id/textButtonHistory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="HISTORY ›"
-        android:textColor="@color/colorTextMuted"
-        android:textSize="13sp"
-        android:letterSpacing="0.2"
-        android:fontFamily="monospace"
-        android:paddingTop="8dp"
-        android:paddingBottom="24dp"/>
 
 </LinearLayout>

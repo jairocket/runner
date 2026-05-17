@@ -8,8 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import com.runner.R
 import com.runner.databinding.FragmentTrackingBinding
 
 class TrackingFragment : Fragment() {
@@ -53,9 +51,6 @@ class TrackingFragment : Fragment() {
         binding.buttonStop.setOnClickListener { viewModel.stopTracking() }
         binding.buttonResume.setOnClickListener { viewModel.resumeTracking() }
         binding.buttonSave.setOnClickListener { viewModel.resetTimer() }
-        binding.textButtonHistory.setOnClickListener {
-            findNavController().navigate(R.id.action_TrackingFragment_to_HistoryFragment)
-        }
     }
 
     private fun applyTrackingState(isTracking: Boolean) {

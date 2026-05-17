@@ -56,5 +56,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.play.services.location)
+    implementation(libs.osmdroid.android)
+    implementation(libs.androidx.recyclerview)
 
 }

@@ -10,6 +10,9 @@
     <!-- Se o app precisar rastrear com a tela desligada (Android 10+) -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
+    <!-- Necessário para o OSMDroid baixar tiles de mapa -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:dataExtractionRules="@xml/data_extraction_rules"

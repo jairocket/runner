@@ -12,6 +12,9 @@ class LocationViewModel : ViewModel() {
 
     val locationLiveData = MutableLiveData<Location>()
 
+    private val _locationHistory = mutableListOf<android.location.Location>()
+    val locationHistory: List<android.location.Location> get() = _locationHistory
+
     private val _isTracking = MutableLiveData(false)
     val isTracking: LiveData<Boolean> = _isTracking
 
@@ -37,6 +40,7 @@ class LocationViewModel : ViewModel() {
 
     fun startTracking() {
         if (_isTracking.value == true) return
+        _locationHistory.clear()
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
         _elapsedSeconds.value = 0L
@@ -73,6 +77,7 @@ class LocationViewModel : ViewModel() {
     fun updateLocation(location: Location) {
         locationLiveData.value = location
         if (_isTracking.value == true) {
+            _locationHistory.add(location)
             lastLocation?.let { prev ->
                 val deltaM = prev.distanceTo(location)
                 if (deltaM > 0f) {
