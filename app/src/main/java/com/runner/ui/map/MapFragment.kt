@@ -43,7 +43,7 @@ class MapFragment : Fragment() {
         binding.mapView.apply {
             setTileSource(TileSourceFactory.MAPNIK)
             setMultiTouchControls(true)
-            controller.setZoom(17.0)
+            controller.setZoom(18.5)
             overlays.add(routePolyline)
         }
 
