@@ -28,18 +28,6 @@
             android:letterSpacing="0.3"
             android:fontFamily="sans-serif-condensed"/>
 
-        <TextView
-            android:id="@+id/buttonSecond"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&#8249; BACK"
-            android:textColor="@color/colorTextMuted"
-            android:textSize="13sp"
-            android:letterSpacing="0.2"
-            android:fontFamily="monospace"
-            android:paddingStart="8dp"
-            android:paddingEnd="0dp"/>
-
     </LinearLayout>
 
     <!-- Divider -->

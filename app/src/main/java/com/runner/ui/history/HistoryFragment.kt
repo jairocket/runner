@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.runner.R
 import com.runner.databinding.FragmentSecondBinding
 
 class HistoryFragment : Fragment() {
@@ -39,9 +37,6 @@ class HistoryFragment : Fragment() {
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_HistoryFragment_to_TrackingFragment)
-        }
     }
 
     override fun onDestroyView() {
