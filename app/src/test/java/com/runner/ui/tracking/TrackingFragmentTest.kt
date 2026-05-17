@@ -12,6 +12,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.android.material.button.MaterialButton
 import com.runner.R
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -100,5 +101,13 @@ class TrackingFragmentTest {
     fun binding_onDestroyView_doesNotLeak() {
         val scenario = launch()
         scenario.moveToState(Lifecycle.State.DESTROYED)
+    }
+
+    @Test
+    fun `nav links are absent from layout`() {
+        launch().onFragment { fragment ->
+            assertNull(fragment.view?.findViewById<View>(R.id.textButtonMap))
+            assertNull(fragment.view?.findViewById<View>(R.id.textButtonHistory))
+        }
     }
 }
