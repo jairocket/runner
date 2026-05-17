@@ -197,4 +197,23 @@ class LocationViewModelTest {
         viewModel.resetTimer()
         assertTrue(viewModel.isTracking.value!!)
     }
+
+    @Test
+    fun resetTimer_clearsLocationHistory() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        viewModel.stopTracking()
+        viewModel.resetTimer()
+        assertTrue(viewModel.locationHistory.isEmpty())
+    }
+
+    @Test
+    fun resetTimer_emitsTrajectorySaved() {
+        viewModel.startTracking()
+        viewModel.stopTracking()
+        var emitted = false
+        viewModel.trajectorySaved.observeForever { emitted = true }
+        viewModel.resetTimer()
+        assertTrue(emitted)
+    }
 }

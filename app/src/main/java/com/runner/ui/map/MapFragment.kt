@@ -19,7 +19,7 @@ class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
     private val viewModel: LocationViewModel by activityViewModels()
-    private val routePolyline = Polyline()
+    internal val routePolyline = Polyline()
     private var hasInitialCenter = false
     private var overlayTimeoutRunnable: Runnable? = null
 
@@ -77,6 +77,11 @@ class MapFragment : Fragment() {
                 binding.mapView.controller.animateTo(point)
                 binding.mapView.invalidate()
             }
+        }
+
+        viewModel.trajectorySaved.observe(viewLifecycleOwner) {
+            routePolyline.setPoints(emptyList())
+            binding.mapView.invalidate()
         }
 
     }
