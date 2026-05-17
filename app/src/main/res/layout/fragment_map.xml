@@ -21,4 +21,37 @@
         app:backgroundTint="@color/colorAccentLime"
         app:cornerRadius="2dp"/>
 
+    <FrameLayout
+        android:id="@+id/locationLoadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:contentDescription="Loading location"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Getting your location…"
+                android:textSize="14sp"
+                android:textColor="@color/colorTextPrimary"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 </FrameLayout>

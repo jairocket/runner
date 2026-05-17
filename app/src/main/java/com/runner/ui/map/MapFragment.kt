@@ -21,12 +21,19 @@ class MapFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: LocationViewModel by activityViewModels()
     private val routePolyline = Polyline()
+    private var hasInitialCenter = false
+    private var overlayTimeoutRunnable: Runnable? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         Configuration.getInstance().load(
             requireContext(),
             android.preference.PreferenceManager.getDefaultSharedPreferences(requireContext())
         )
+        Configuration.getInstance().userAgentValue = requireContext().packageName
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,7 +50,28 @@ class MapFragment : Fragment() {
 
         drawHistory()
 
+        when {
+            viewModel.locationHistory.isNotEmpty() -> {
+                // drawHistory() already centered on points.last() via animateTo
+                hideOverlay()
+            }
+            else -> viewModel.locationLiveData.value?.let { loc ->
+                binding.mapView.controller.setCenter(GeoPoint(loc.latitude, loc.longitude))
+                hideOverlay()
+            }
+        }
+
+        if (!hasInitialCenter) {
+            val timeout = Runnable { hideOverlay() }
+            overlayTimeoutRunnable = timeout
+            view.postDelayed(timeout, 10_000L)
+        }
+
         viewModel.locationLiveData.observe(viewLifecycleOwner) { location ->
+            if (!hasInitialCenter) {
+                binding.mapView.controller.setCenter(GeoPoint(location.latitude, location.longitude))
+                hideOverlay()
+            }
             if (viewModel.isTracking.value == true) {
                 val point = GeoPoint(location.latitude, location.longitude)
                 routePolyline.addPoint(point)
@@ -53,6 +81,14 @@ class MapFragment : Fragment() {
         }
 
         binding.buttonMapBack.setOnClickListener { findNavController().navigateUp() }
+    }
+
+    private fun hideOverlay() {
+        _binding ?: return
+        binding.locationLoadingOverlay.visibility = View.GONE
+        hasInitialCenter = true
+        overlayTimeoutRunnable?.let { binding.root.removeCallbacks(it) }
+        overlayTimeoutRunnable = null
     }
 
     private fun drawHistory() {
@@ -75,6 +111,8 @@ class MapFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        overlayTimeoutRunnable?.let { binding.root.removeCallbacks(it) }
+        overlayTimeoutRunnable = null
         _binding = null
     }
 }
