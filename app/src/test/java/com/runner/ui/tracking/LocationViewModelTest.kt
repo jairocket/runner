@@ -1,16 +1,21 @@
 package com.runner.ui.tracking
 
 import android.location.Location
+import android.os.Looper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import java.time.Duration
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowSystemClock
 
 @RunWith(AndroidJUnit4::class)
 @Config(sdk = [33])
@@ -107,5 +112,89 @@ class LocationViewModelTest {
         viewModel.updateLocation(location)
         assertEquals(5.0, viewModel.locationLiveData.value?.latitude)
         assertEquals(10.0, viewModel.locationLiveData.value?.longitude)
+    }
+
+    // ── updateLocation while tracking ─────────────────────────────────────────
+
+    @Test
+    fun updateLocation_whileTracking_firstLocation_doesNotAccumulateDistance() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        assertEquals(0.0, viewModel.distanceKm.value!!, 0.001)
+    }
+
+    @Test
+    fun updateLocation_whileTracking_twoLocations_accumulatesDistance() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.009; longitude = 0.0 })
+        assertTrue(viewModel.distanceKm.value!! > 0.0)
+    }
+
+    @Test
+    fun updateLocation_whileTracking_addsToLocationHistory() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        viewModel.updateLocation(Location("test").apply { latitude = 1.0; longitude = 0.0 })
+        assertEquals(2, viewModel.locationHistory.size)
+    }
+
+    @Test
+    fun updateLocation_whenNotTracking_doesNotAddToHistory() {
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        assertTrue(viewModel.locationHistory.isEmpty())
+    }
+
+    @Test
+    fun startTracking_clearsLocationHistory() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        viewModel.stopTracking()
+        viewModel.startTracking()
+        assertTrue(viewModel.locationHistory.isEmpty())
+    }
+
+    @Test
+    fun updateLocation_withSufficientDistanceAndElapsedTime_calculatesPace() {
+        viewModel.startTracking()
+        ShadowSystemClock.advanceBy(Duration.ofSeconds(600))
+        shadowOf(Looper.getMainLooper()).idle()
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0 })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.009; longitude = 0.0 })
+        assertNotNull(viewModel.paceSecPerKm.value)
+    }
+
+    // ── resumeTracking ────────────────────────────────────────────────────────
+
+    @Test
+    fun resumeTracking_whenElapsedIsZero_doesNotStartTracking() {
+        viewModel.resumeTracking()
+        assertFalse(viewModel.isTracking.value!!)
+    }
+
+    @Test
+    fun resumeTracking_whenAlreadyTracking_doesNothing() {
+        viewModel.startTracking()
+        viewModel.resumeTracking()
+        assertTrue(viewModel.isTracking.value!!)
+    }
+
+    // ── resetTimer ────────────────────────────────────────────────────────────
+
+    @Test
+    fun resetTimer_whenNotTracking_resetsAllMetrics() {
+        viewModel.startTracking()
+        viewModel.stopTracking()
+        viewModel.resetTimer()
+        assertEquals(0L, viewModel.elapsedSeconds.value)
+        assertEquals(0.0, viewModel.distanceKm.value!!, 0.001)
+        assertNull(viewModel.paceSecPerKm.value)
+    }
+
+    @Test
+    fun resetTimer_whenTracking_doesNotReset() {
+        viewModel.startTracking()
+        viewModel.resetTimer()
+        assertTrue(viewModel.isTracking.value!!)
     }
 }
