@@ -42,3 +42,7 @@ This is an Android app (Kotlin, min SDK 24, target SDK 36, Java 21) that tracks 
 **Dependencies** are centralized in `gradle/libs.versions.toml` (version catalog). Key libraries: `play-services-location:21.3.0`, Navigation KTX 2.6.0, Material 1.10.0.
 
 View Binding is enabled; Jetpack Compose is **not** used.
+
+## Workflow
+
+Always use the `superpowers:test-driven-development` skill before writing any implementation code.
