@@ -12,8 +12,8 @@ class LocationViewModel : ViewModel() {
 
     val locationLiveData = MutableLiveData<Location>()
 
-    private val _locationHistory = mutableListOf<android.location.Location>()
-    val locationHistory: List<android.location.Location> get() = _locationHistory
+    private val _locationHistory = mutableListOf<Location>()
+    val locationHistory: List<Location> get() = _locationHistory
 
     private val _isTracking = MutableLiveData(false)
     val isTracking: LiveData<Boolean> = _isTracking
