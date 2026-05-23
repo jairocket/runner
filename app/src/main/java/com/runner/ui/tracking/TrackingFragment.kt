@@ -47,6 +47,10 @@ class TrackingFragment : Fragment() {
             binding.textPaceValue.text = if (pace != null) formatPace(pace) else "--:--"
         }
 
+        viewModel.speedKmh.observe(viewLifecycleOwner) { speed ->
+            binding.textSpeedValue.text = if (speed != null) "%.1f".format(speed) else "--"
+        }
+
         binding.buttonStart.setOnClickListener { viewModel.startTracking() }
         binding.buttonStop.setOnClickListener { viewModel.stopTracking() }
         binding.buttonResume.setOnClickListener { viewModel.resumeTracking() }
@@ -67,6 +71,7 @@ class TrackingFragment : Fragment() {
                 binding.textStatusLabel.text = "RUNNING"
                 binding.textTimerDisplay.setTextColor(lime)
                 binding.textPaceValue.setTextColor(lime)
+                binding.textSpeedValue.setTextColor(lime)
                 binding.textDistanceValue.setTextColor(lime)
                 binding.rowStartResume.visibility = View.GONE
                 binding.buttonStop.visibility = View.VISIBLE
@@ -77,6 +82,7 @@ class TrackingFragment : Fragment() {
                 binding.textStatusLabel.text = "STOPPED"
                 binding.textTimerDisplay.setTextColor(white)
                 binding.textPaceValue.setTextColor(white)
+                binding.textSpeedValue.setTextColor(white)
                 binding.textDistanceValue.setTextColor(white)
                 binding.rowStartResume.visibility = View.VISIBLE
                 binding.buttonResume.visibility = View.VISIBLE
@@ -88,6 +94,7 @@ class TrackingFragment : Fragment() {
                 binding.textStatusLabel.text = "IDLE"
                 binding.textTimerDisplay.setTextColor(white)
                 binding.textPaceValue.setTextColor(white)
+                binding.textSpeedValue.setTextColor(white)
                 binding.textDistanceValue.setTextColor(white)
                 binding.rowStartResume.visibility = View.VISIBLE
                 binding.buttonResume.visibility = View.GONE

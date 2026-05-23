@@ -201,4 +201,31 @@ class TrackingFragmentTest {
         }
     }
 
+    // ── speedKmh → UI ─────────────────────────────────────────────────────────
+
+    @Test
+    fun speedValue_initialState_showsPlaceholder() {
+        val scenario = launch()
+        scenario.onFragment { fragment ->
+            val text = fragment.requireView()
+                .findViewById<TextView>(R.id.textSpeedValue).text.toString()
+            assertEquals("--", text)
+        }
+    }
+
+    @Test
+    fun speedKmh_observer_withGpsSpeed_updatesDisplay() {
+        launch().onFragment { fragment ->
+            val viewModel = getViewModel(fragment)
+            val location = Location("test").apply {
+                latitude = 0.0; longitude = 0.0
+                speed = 10.0f // 10 m/s = 36 km/h
+            }
+            viewModel.updateLocation(location)
+            val text = fragment.requireView()
+                .findViewById<TextView>(R.id.textSpeedValue).text.toString()
+            assertNotEquals("--", text)
+        }
+    }
+
 }

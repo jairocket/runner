@@ -89,7 +89,7 @@
         android:layout_height="1dp"
         android:background="@color/colorDivider"/>
 
-    <!-- Metrics: pace | divider | distance -->
+    <!-- Metrics: pace | speed | distance -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="--:--"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="48sp"
+                android:textSize="36sp"
                 android:fontFamily="monospace"
                 android:includeFontPadding="false"/>
 
@@ -145,6 +145,56 @@
             android:layout_marginBottom="14dp"
             android:background="@color/colorDivider"/>
 
+        <!-- Speed -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingTop="22dp"
+            android:paddingBottom="22dp">
+
+            <TextView
+                android:id="@+id/textSpeedValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textColor="@color/colorTextPrimary"
+                android:textSize="36sp"
+                android:fontFamily="monospace"
+                android:includeFontPadding="false"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="km/h"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="10sp"
+                android:letterSpacing="0.18"
+                android:fontFamily="monospace"
+                android:layout_marginTop="6dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SPEED"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="8sp"
+                android:letterSpacing="0.3"
+                android:layout_marginTop="3dp"
+                tools:ignore="SmallSp"/>
+
+        </LinearLayout>
+
+        <!-- Vertical divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="14dp"
+            android:background="@color/colorDivider"/>
+
         <!-- Distance -->
         <LinearLayout
             android:layout_width="0dp"
@@ -161,7 +211,7 @@
                 android:layout_height="wrap_content"
                 android:text="0.00"
                 android:textColor="@color/colorTextPrimary"
-                android:textSize="48sp"
+                android:textSize="36sp"
                 android:fontFamily="monospace"
                 android:includeFontPadding="false"/>
 
