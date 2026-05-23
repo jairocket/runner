@@ -33,7 +33,7 @@ class HistoryFragment : Fragment() {
 
         binding.recyclerViewHistory.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = HistoryAdapter(mockRuns)
+            adapter = HistoryAdapter(mockRuns) {}
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
 
