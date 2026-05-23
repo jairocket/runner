@@ -15,9 +15,20 @@ When a user taps a run in `HistoryFragment`, a `RunDetailFragment` opens showing
 
 A lightweight, `Parcelable` coordinate class. Kept framework-agnostic (not osmdroid's `GeoPoint`) so it can be serialized and stored independently of the map library.
 
+Uses manual `Parcelable` (not `@Parcelize`) because the `kotlin-parcelize` compiler plugin is incompatible with AGP 9.0.0-alpha06's embedded Kotlin 2.2.10.
+
 ```kotlin
-@Parcelize
-data class LatLng(val lat: Double, val lon: Double) : Parcelable
+data class LatLng(val lat: Double, val lon: Double) : Parcelable {
+    override fun describeContents(): Int = 0
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeDouble(lat)
+        parcel.writeDouble(lon)
+    }
+    companion object CREATOR : Parcelable.Creator<LatLng> {
+        override fun createFromParcel(parcel: Parcel) = LatLng(parcel.readDouble(), parcel.readDouble())
+        override fun newArray(size: Int): Array<LatLng?> = arrayOfNulls(size)
+    }
+}
 ```
 
 ### `RunActivity`
@@ -106,29 +117,30 @@ Both ViewModels use a `ViewModelProvider.Factory` that instantiates `MockRunRepo
 
 `RunDetailFragment` is a sub-destination of `HistoryFragment` in the nav graph. It is **not** a bottom-nav top-level destination. Back-pressing from detail returns to the history list.
 
-Nav graph additions:
+Nav graph additions — the `<action>` is nested inside the `HistoryFragment` element, and `RunDetailFragment` is a plain destination with no `<argument>` declaration (no Safe Args):
 
 ```xml
+<fragment
+    android:id="@+id/HistoryFragment"
+    android:name="com.runner.ui.history.HistoryFragment"
+    ...>
+    <action
+        android:id="@+id/action_history_to_detail"
+        app:destination="@id/RunDetailFragment"/>
+</fragment>
+
 <fragment
     android:id="@+id/RunDetailFragment"
     android:name="com.runner.ui.history.RunDetailFragment"
     android:label="Run Detail"
-    tools:layout="@layout/fragment_run_detail">
-    <argument
-        android:name="runId"
-        app:argType="string" />
-</fragment>
-
-<action
-    android:id="@+id/action_history_to_detail"
-    app:destination="@id/RunDetailFragment" />
+    tools:layout="@layout/fragment_run_detail"/>
 ```
 
-Navigation is triggered from `HistoryFragment` using Safe Args:
+Navigation is triggered from `HistoryFragment` using a plain `Bundle` (Safe Args not used — a single string ID doesn't justify the extra plugin dependency):
 
 ```kotlin
-val action = HistoryFragmentDirections.actionHistoryToDetail(run.id)
-findNavController().navigate(action)
+val bundle = Bundle().apply { putString("runId", run.id) }
+findNavController().navigate(R.id.action_history_to_detail, bundle)
 ```
 
 ---
@@ -169,7 +181,7 @@ Two sections stacked vertically in a `LinearLayout`:
 
 ## RunDetailFragment Logic
 
-1. Read `runId` from `arguments` (via Safe Args generated `RunDetailFragmentArgs`).
+1. Read `runId` from `arguments` using `RunDetailFragment.ARG_RUN_ID = "runId"` constant.
 2. Instantiate `RunDetailViewModel` via factory.
 3. Bind `run.date`, `run.distanceKm`, `run.duration`, `run.paceMinKm` to stats views.
 4. Convert `run.positions: List<LatLng>` → `List<GeoPoint>`.
