@@ -6,5 +6,5 @@ data class RunActivity(
     val duration: String,
     val distanceKm: String,
     val paceMinKm: String,
-    val positions: List<LatLng>
+    val positions: List<Position>
 )

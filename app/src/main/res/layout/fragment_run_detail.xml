@@ -35,6 +35,16 @@
                 tools:text="May 14, 2026"/>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DISTANCE"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="9sp"
+                android:letterSpacing="0.15"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
                 android:id="@+id/textDetailDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -54,6 +64,16 @@
             android:gravity="end">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DURATION"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="9sp"
+                android:letterSpacing="0.15"
+                android:fontFamily="monospace"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
                 android:id="@+id/textDetailDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -64,13 +84,23 @@
                 tools:text="42:17"/>
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PACE"
+                android:textColor="@color/colorTextMuted"
+                android:textSize="9sp"
+                android:letterSpacing="0.15"
+                android:fontFamily="monospace"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="2dp"/>
+
+            <TextView
                 android:id="@+id/textDetailPace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorTextMuted"
                 android:textSize="11sp"
                 android:fontFamily="monospace"
-                android:layout_marginTop="4dp"
                 tools:text="6:49 min/km"/>
 
         </LinearLayout>

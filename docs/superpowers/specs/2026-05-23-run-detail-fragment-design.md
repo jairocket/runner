@@ -11,22 +11,22 @@ When a user taps a run in `HistoryFragment`, a `RunDetailFragment` opens showing
 
 ## Data Model
 
-### `LatLng`
+### `Position`
 
 A lightweight, `Parcelable` coordinate class. Kept framework-agnostic (not osmdroid's `GeoPoint`) so it can be serialized and stored independently of the map library.
 
 Uses manual `Parcelable` (not `@Parcelize`) because the `kotlin-parcelize` compiler plugin is incompatible with AGP 9.0.0-alpha06's embedded Kotlin 2.2.10.
 
 ```kotlin
-data class LatLng(val lat: Double, val lon: Double) : Parcelable {
+data class Position(val lat: Double, val lon: Double) : Parcelable {
     override fun describeContents(): Int = 0
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeDouble(lat)
         parcel.writeDouble(lon)
     }
-    companion object CREATOR : Parcelable.Creator<LatLng> {
-        override fun createFromParcel(parcel: Parcel) = LatLng(parcel.readDouble(), parcel.readDouble())
-        override fun newArray(size: Int): Array<LatLng?> = arrayOfNulls(size)
+    companion object CREATOR : Parcelable.Creator<Position> {
+        override fun createFromParcel(parcel: Parcel) = Position(parcel.readDouble(), parcel.readDouble())
+        override fun newArray(size: Int): Array<Position?> = arrayOfNulls(size)
     }
 }
 ```
@@ -42,7 +42,7 @@ data class RunActivity(
     val duration: String,
     val distanceKm: String,
     val paceMinKm: String,
-    val positions: List<LatLng>
+    val positions: List<Position>
 )
 ```
 
@@ -184,7 +184,7 @@ Two sections stacked vertically in a `LinearLayout`:
 1. Read `runId` from `arguments` using `RunDetailFragment.ARG_RUN_ID = "runId"` constant.
 2. Instantiate `RunDetailViewModel` via factory.
 3. Bind `run.date`, `run.distanceKm`, `run.duration`, `run.paceMinKm` to stats views.
-4. Convert `run.positions: List<LatLng>` → `List<GeoPoint>`.
+4. Convert `run.positions: List<Position>` → `List<GeoPoint>`.
 5. Set points on a `Polyline` overlay and add it to the `MapView`.
 6. Center the map on the midpoint of the route (`positions[positions.size / 2]`).
 
@@ -198,7 +198,7 @@ osmdroid setup mirrors `MapFragment`: `Configuration.getInstance().load(...)`, `
 
 | File | Change |
 |------|--------|
-| `ui/history/LatLng.kt` | New — coordinate data class |
+| `ui/history/Position.kt` | New — coordinate data class |
 | `ui/history/RunActivity.kt` | Add `id`, `positions` fields |
 | `ui/history/RunRepository.kt` | New — interface |
 | `ui/history/MockRunRepository.kt` | New — mock implementation with position data |
