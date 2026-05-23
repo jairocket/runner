@@ -27,6 +27,9 @@ class LocationViewModel : ViewModel() {
     private val _paceSecPerKm = MutableLiveData<Double?>(null)
     val paceSecPerKm: LiveData<Double?> = _paceSecPerKm
 
+    private val _speedKmh = MutableLiveData<Float?>(null)
+    val speedKmh: LiveData<Float?> = _speedKmh
+
     private val _trajectorySaved = MutableLiveData<Unit>()
     val trajectorySaved: LiveData<Unit> = _trajectorySaved
 
@@ -81,6 +84,7 @@ class LocationViewModel : ViewModel() {
 
     fun updateLocation(location: Location) {
         locationLiveData.value = location
+        _speedKmh.value = if (location.hasSpeed()) location.speed * 3.6f else null
         if (_isTracking.value == true) {
             _locationHistory.add(location)
             lastLocation?.let { prev ->

@@ -216,4 +216,28 @@ class LocationViewModelTest {
         viewModel.resetTimer()
         assertTrue(emitted)
     }
+
+    // ── speedKmh ──────────────────────────────────────────────────────────────
+
+    @Test
+    fun speedKmh_initialValue_isNull() {
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun updateLocation_withGpsSpeed_convertsToKmh() {
+        val location = Location("test").apply {
+            latitude = 0.0; longitude = 0.0
+            speed = 10.0f // 10 m/s = 36 km/h
+        }
+        viewModel.updateLocation(location)
+        assertEquals(36.0f, viewModel.speedKmh.value!!, 0.01f)
+    }
+
+    @Test
+    fun updateLocation_withoutGpsSpeed_speedKmhIsNull() {
+        val location = Location("test").apply { latitude = 0.0; longitude = 0.0 }
+        viewModel.updateLocation(location)
+        assertNull(viewModel.speedKmh.value)
+    }
 }
