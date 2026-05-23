@@ -6,7 +6,7 @@
 
 **Architecture:** `HistoryFragment` navigates to `RunDetailFragment` passing only a `runId` string via Bundle. Each fragment has its own ViewModel backed by a `RunRepository` interface, with `MockRunRepository` as the current implementation — the seam for future Supabase/custom backend swap. No Safe Args — Bundle with a `ARG_RUN_ID` constant.
 
-**Tech Stack:** Kotlin, AndroidX Navigation Component, osmdroid 6.1.18, Robolectric 4.11.1 (tests via `./run_tests.sh`), View Binding, `kotlin-parcelize` plugin.
+**Tech Stack:** Kotlin, AndroidX Navigation Component, osmdroid 6.1.18, Robolectric 4.11.1 (tests via `./run_tests.sh`), View Binding. Note: `kotlin-parcelize` plugin is incompatible with AGP 9.0.0-alpha06's embedded Kotlin — `LatLng` uses manual `Parcelable` instead of `@Parcelize`.
 
 ---
 
@@ -37,7 +37,7 @@
 
 ---
 
-## Task 1: Add `kotlin-parcelize` Plugin
+## ✅ Task 1: Add `kotlin-parcelize` Plugin (DONE — plugin abandoned, build.gradle.kts clean)
 
 **Files:**
 - Modify: `app/build.gradle.kts`
@@ -70,7 +70,7 @@ git commit -m "build: add kotlin-parcelize plugin"
 
 ---
 
-## Task 2: Create `LatLng` Data Class
+## ✅ Task 2: Create `LatLng` Data Class (DONE — manual Parcelable, not @Parcelize)
 
 **Files:**
 - Create: `app/src/test/java/com/runner/ui/history/LatLngTest.kt`
@@ -119,11 +119,21 @@ Create `app/src/main/java/com/runner/ui/history/LatLng.kt`:
 ```kotlin
 package com.runner.ui.history
 
+import android.os.Parcel
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class LatLng(val lat: Double, val lon: Double) : Parcelable
+data class LatLng(val lat: Double, val lon: Double) : Parcelable {
+    override fun describeContents(): Int = 0
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeDouble(lat)
+        parcel.writeDouble(lon)
+    }
+
+    companion object CREATOR : Parcelable.Creator<LatLng> {
+        override fun createFromParcel(parcel: Parcel) = LatLng(parcel.readDouble(), parcel.readDouble())
+        override fun newArray(size: Int): Array<LatLng?> = arrayOfNulls(size)
+    }
+}
 ```
 
 - [ ] **Step 4: Run to confirm passing**
@@ -144,7 +154,7 @@ git commit -m "feat: add LatLng parcelable coordinate class"
 
 ---
 
-## Task 3: Update `RunActivity` + Create `MockRuns.kt` + Fix Compilation
+## ✅ Task 3: Update `RunActivity` + Create `MockRuns.kt` + Fix Compilation (DONE)
 
 `RunActivity` gains `id` and `positions`. Anything constructing `RunActivity` with the old 4-arg signature must be updated immediately.
 
@@ -398,7 +408,7 @@ git commit -m "feat: add id and positions to RunActivity, add mock run data"
 
 ---
 
-## Task 4: `RunRepository` Interface + `MockRunRepository`
+## ✅ Task 4: `RunRepository` Interface + `MockRunRepository` (DONE)
 
 **Files:**
 - Create: `app/src/test/java/com/runner/ui/history/MockRunRepositoryTest.kt`
@@ -498,7 +508,7 @@ git commit -m "feat: add RunRepository interface and MockRunRepository"
 
 ---
 
-## Task 5: `HistoryViewModel`
+## ✅ Task 5: `HistoryViewModel` (DONE)
 
 **Files:**
 - Create: `app/src/test/java/com/runner/ui/history/HistoryViewModelTest.kt`
@@ -593,7 +603,7 @@ git commit -m "feat: add HistoryViewModel backed by RunRepository"
 
 ---
 
-## Task 6: Update `HistoryAdapter` with Click Callback
+## ✅ Task 6: Update `HistoryAdapter` with Click Callback (DONE)
 
 **Files:**
 - Modify: `app/src/main/java/com/runner/ui/history/HistoryAdapter.kt`
@@ -683,7 +693,7 @@ git commit -m "feat: add click callback to HistoryAdapter"
 
 ---
 
-## Task 7: Update `HistoryFragment` + Nav Graph
+## ✅ Task 7: Update `HistoryFragment` + Nav Graph (DONE — ⚠️ tests failing, diagnose before resuming)
 
 Replace the inline mock list with `HistoryViewModel` and wire the click to navigate. Also add `RunDetailFragment` to the nav graph so navigation compiles.
 

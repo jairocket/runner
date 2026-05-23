@@ -15,12 +15,22 @@
         android:id="@+id/HistoryFragment"
         android:name="com.runner.ui.history.HistoryFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second"/>
+        tools:layout="@layout/fragment_second">
+        <action
+            android:id="@+id/action_history_to_detail"
+            app:destination="@id/RunDetailFragment"/>
+    </fragment>
 
     <fragment
         android:id="@+id/MapFragment"
         android:name="com.runner.ui.map.MapFragment"
         android:label="Map"
         tools:layout="@layout/fragment_map"/>
+
+    <fragment
+        android:id="@+id/RunDetailFragment"
+        android:name="com.runner.ui.history.RunDetailFragment"
+        android:label="Run Detail"
+        tools:layout="@layout/fragment_run_detail"/>
 
 </navigation>
