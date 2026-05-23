@@ -5,8 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.runner.databinding.ItemHistoryRunBinding
 
-class HistoryAdapter(private val items: List<RunActivity>) :
-    RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(
+    private val items: List<RunActivity>,
+    private val onItemClick: (RunActivity) -> Unit
+) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
     inner class ViewHolder(private val binding: ItemHistoryRunBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -16,6 +18,7 @@ class HistoryAdapter(private val items: List<RunActivity>) :
             binding.textItemDistance.text = item.distanceKm
             binding.textItemDuration.text = item.duration
             binding.textItemPace.text = "${item.paceMinKm} min/km"
+            binding.root.setOnClickListener { onItemClick(item) }
         }
     }
 
