@@ -56,3 +56,12 @@ View Binding is enabled; Jetpack Compose is **not** used.
 ## Workflow
 
 Always use the `superpowers:test-driven-development` skill before writing any implementation code.
+
+Before finishing a feature branch (before push/PR), install the debug APK on the paired device and smoke test the feature:
+
+```bash
+./gradlew assembleDebug
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```
+
+Wait for the user to confirm the smoke test passes before proceeding to push.
