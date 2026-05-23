@@ -23,12 +23,12 @@ class HistoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val mockRuns = listOf(
-            RunActivity("May 14, 2026", "42:17", "6.2 km", "6:49"),
-            RunActivity("May 12, 2026", "31:04", "4.8 km", "6:28"),
-            RunActivity("May 10, 2026", "58:33", "9.1 km", "6:26"),
-            RunActivity("May 7, 2026",  "22:45", "3.5 km", "6:30"),
-            RunActivity("May 5, 2026",  "45:12", "7.0 km", "6:27"),
-            RunActivity("May 3, 2026",  "35:50", "5.5 km", "6:31")
+            RunActivity("1", "May 14, 2026", "42:17", "6.2 km", "6:49", emptyList()),
+            RunActivity("2", "May 12, 2026", "31:04", "4.8 km", "6:28", emptyList()),
+            RunActivity("3", "May 10, 2026", "58:33", "9.1 km", "6:26", emptyList()),
+            RunActivity("4", "May 7, 2026",  "22:45", "3.5 km", "6:30", emptyList()),
+            RunActivity("5", "May 5, 2026",  "45:12", "7.0 km", "6:27", emptyList()),
+            RunActivity("6", "May 3, 2026",  "35:50", "5.5 km", "6:31", emptyList())
         )
 
         binding.recyclerViewHistory.apply {

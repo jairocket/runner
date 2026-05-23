@@ -17,8 +17,8 @@ class HistoryAdapterTest {
     private val context = RuntimeEnvironment.getApplication()
 
     private val sampleItems = listOf(
-        RunActivity("May 14, 2026", "42:17", "6.2 km", "6:49"),
-        RunActivity("May 12, 2026", "31:04", "4.8 km", "6:28")
+        RunActivity("1", "May 14, 2026", "42:17", "6.2 km", "6:49", emptyList()),
+        RunActivity("2", "May 12, 2026", "31:04", "4.8 km", "6:28", emptyList())
     )
 
     private fun makeHolder(): HistoryAdapter.ViewHolder =
