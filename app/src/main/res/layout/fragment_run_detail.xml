@@ -6,102 +6,138 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
-    <!-- Stats header -->
+    <!-- Date -->
+    <TextView
+        android:id="@+id/textDetailDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextMuted"
+        android:textSize="15sp"
+        android:letterSpacing="0.05"
+        android:fontFamily="monospace"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp"
+        tools:text="May 14, 2026"/>
+
+    <!-- Distance (left) | Divider | Stats (right) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingStart="24dp"
         android:paddingEnd="24dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:gravity="center_vertical">
 
-        <!-- Left: date + distance -->
+        <!-- Distance -->
+        <TextView
+            android:id="@+id/textDetailDistance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/colorAccentLime"
+            android:textSize="28sp"
+            android:fontFamily="monospace"
+            android:includeFontPadding="false"
+            tools:text="6.2 km"/>
+
+        <!-- Vertical divider -->
+        <View
+            android:layout_width="1dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/colorDivider"/>
+
+        <!-- Stats: each row has label (left) + value (right-aligned) -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textDetailDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="10sp"
-                android:letterSpacing="0.2"
-                android:fontFamily="monospace"
-                android:layout_marginBottom="6dp"
-                tools:text="May 14, 2026"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DISTANCE"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="9sp"
-                android:letterSpacing="0.15"
-                android:fontFamily="monospace"
-                android:layout_marginBottom="2dp"/>
-
-            <TextView
-                android:id="@+id/textDetailDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorAccentLime"
-                android:textSize="28sp"
-                android:fontFamily="monospace"
-                android:includeFontPadding="false"
-                tools:text="6.2 km"/>
-
-        </LinearLayout>
-
-        <!-- Right: duration + pace -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="end">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="DURATION"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="9sp"
-                android:letterSpacing="0.15"
-                android:fontFamily="monospace"
-                android:layout_marginBottom="2dp"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
 
-            <TextView
-                android:id="@+id/textDetailDuration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorTextPrimary"
-                android:textSize="18sp"
-                android:fontFamily="monospace"
-                android:includeFontPadding="false"
-                tools:text="42:17"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_pace"
+                    android:textColor="@color/colorTextMuted"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PACE"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="9sp"
-                android:letterSpacing="0.15"
-                android:fontFamily="monospace"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="2dp"/>
+                <TextView
+                    android:id="@+id/textDetailPace"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="15sp"
+                    android:fontFamily="monospace"
+                    tools:text="6:49 min/km"/>
 
-            <TextView
-                android:id="@+id/textDetailPace"
-                android:layout_width="wrap_content"
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorTextMuted"
-                android:textSize="11sp"
-                android:fontFamily="monospace"
-                tools:text="6:49 min/km"/>
+                android:orientation="horizontal"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_duration"
+                    android:textColor="@color/colorTextMuted"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"/>
+
+                <TextView
+                    android:id="@+id/textDetailDuration"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="15sp"
+                    android:fontFamily="monospace"
+                    tools:text="42:17"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_speed"
+                    android:textColor="@color/colorTextMuted"
+                    android:textSize="13sp"
+                    android:fontFamily="monospace"/>
+
+                <TextView
+                    android:id="@+id/textDetailAvgSpeed"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:textColor="@color/colorTextPrimary"
+                    android:textSize="15sp"
+                    android:fontFamily="monospace"
+                    tools:text="8.8 km/h"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

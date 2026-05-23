@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.runner.R
 import com.runner.databinding.FragmentRunDetailBinding
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -38,7 +39,8 @@ class RunDetailFragment : Fragment() {
         binding.textDetailDate.text = run.date
         binding.textDetailDistance.text = run.distanceKm
         binding.textDetailDuration.text = run.duration
-        binding.textDetailPace.text = "${run.paceMinKm} min/km"
+        binding.textDetailPace.text = getString(R.string.run_detail_pace_value, run.paceMinKm)
+        binding.textDetailAvgSpeed.text = getString(R.string.run_detail_speed_value, avgSpeedKmh(run.distanceKm, run.duration))
 
         val points = run.positions.map { GeoPoint(it.lat, it.lon) }
         val polyline = Polyline().apply { setPoints(points) }
@@ -67,6 +69,17 @@ class RunDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun avgSpeedKmh(distanceKm: String, duration: String): String {
+        val km = distanceKm.removeSuffix(" km").toDoubleOrNull() ?: return "--"
+        val parts = duration.split(":")
+        if (parts.size != 2) return "--"
+        val mins = parts[0].toLongOrNull() ?: return "--"
+        val secs = parts[1].toLongOrNull() ?: return "--"
+        val hours = (mins * 60 + secs) / 3600.0
+        if (hours == 0.0) return "--"
+        return "%.1f".format(km / hours)
     }
 
     companion object {

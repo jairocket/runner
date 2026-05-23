@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Runner</string>
+    <string name="label_pace">Pace</string>
+    <string name="label_duration">Duration</string>
+    <string name="label_speed">Speed</string>
+    <string name="run_detail_pace_value">%1$s min/km</string>
+    <string name="run_detail_speed_value">%1$s km/h</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
