@@ -31,6 +31,11 @@ class RunDetailFragmentTest {
             assertEquals(run.distanceKm, view.findViewById<TextView>(R.id.textDetailDistance).text.toString())
             assertEquals(run.duration, view.findViewById<TextView>(R.id.textDetailDuration).text.toString())
             assertEquals("${run.paceMinKm} min/km", view.findViewById<TextView>(R.id.textDetailPace).text.toString())
+            val km = run.distanceKm.removeSuffix(" km").toDouble()
+            val (mins, secs) = run.duration.split(":").map { it.toLong() }
+            val hours = (mins * 60 + secs) / 3600.0
+            val expectedSpeed = "${"%.1f".format(km / hours)} km/h"
+            assertEquals(expectedSpeed, view.findViewById<TextView>(R.id.textDetailAvgSpeed).text.toString())
         }
     }
 
