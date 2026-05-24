@@ -8,6 +8,16 @@
 
 set -euo pipefail
 
+CONVERT=$(command -v magick 2>/dev/null || command -v convert 2>/dev/null || true)
+
+for cmd in rsvg-convert "$CONVERT"; do
+  if [[ -z "$cmd" ]] || ! command -v "$cmd" &>/dev/null; then
+    echo "Error: required tool not found: ${cmd:-convert/magick}" >&2
+    echo "Install: sudo apt-get install librsvg2-bin imagemagick" >&2
+    exit 1
+  fi
+done
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 RES_DIR="$PROJECT_ROOT/app/src/main/res"
@@ -68,7 +78,7 @@ for DENSITY in mdpi hdpi xhdpi xxhdpi xxxhdpi; do
   # Step 2: convert PNG → WebP
   for NAME in ic_launcher ic_launcher_round; do
     OUT_FILE="$OUT_DIR/${NAME}.webp"
-    convert "$TMP_PNG" "$OUT_FILE"
+    $CONVERT "$TMP_PNG" -define webp:lossless=true "$OUT_FILE"
     echo "  wrote $OUT_FILE (${SIZE}x${SIZE})"
   done
 done
