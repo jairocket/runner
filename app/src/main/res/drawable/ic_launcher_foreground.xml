@@ -7,16 +7,16 @@
 
     <!-- ECG main line -->
     <path
-        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54 L88,54"
+        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54"
         android:fillColor="#00000000"
         android:strokeColor="#ff6a00"
         android:strokeWidth="4.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"/>
 
-    <!-- ECG glow pass: same path, thinner, lighter, semi-transparent -->
+    <!-- ECG glow pass -->
     <path
-        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54 L88,54"
+        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54"
         android:fillColor="#00000000"
         android:strokeColor="#ffaa60"
         android:strokeWidth="2"
@@ -24,14 +24,14 @@
         android:strokeLineJoin="round"
         android:strokeAlpha="0.35"/>
 
-    <!-- GPS dot: filled circle at right terminus (88,54) r=6, drawn as two half-arcs -->
+    <!-- GPS dot: filled circle at (78,54) r=6 -->
     <path
-        android:pathData="M82,54 A6,6 0 1,0 94,54 A6,6 0 1,0 82,54 Z"
+        android:pathData="M72,54 A6,6 0 1,0 84,54 A6,6 0 1,0 72,54 Z"
         android:fillColor="#ff6a00"/>
 
-    <!-- GPS ring: semi-transparent stroke circle r=10 around the dot -->
+    <!-- GPS ring: stroke circle at (78,54) r=10 -->
     <path
-        android:pathData="M78,54 A10,10 0 1,0 98,54 A10,10 0 1,0 78,54 Z"
+        android:pathData="M68,54 A10,10 0 1,0 88,54 A10,10 0 1,0 68,54 Z"
         android:fillColor="#00000000"
         android:strokeColor="#ff6a00"
         android:strokeWidth="2"

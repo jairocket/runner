@@ -41,12 +41,12 @@ cat > "$TMP_SVG" << 'SVG_EOF'
     </linearGradient>
   </defs>
   <rect width="108" height="108" fill="url(#bg)"/>
-  <polyline points="8,54 20,54 26,36 32,68 40,20 48,54 56,48 62,54 70,42 78,54 88,54"
+  <polyline points="8,54 20,54 26,36 32,68 40,20 48,54 56,48 62,54 70,42 78,54"
     fill="none" stroke="#ff6a00" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <polyline points="8,54 20,54 26,36 32,68 40,20 48,54 56,48 62,54 70,42 78,54 88,54"
+  <polyline points="8,54 20,54 26,36 32,68 40,20 48,54 56,48 62,54 70,42 78,54"
     fill="none" stroke="#ffaa60" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.35"/>
-  <circle cx="88" cy="54" r="6" fill="#ff6a00"/>
-  <circle cx="88" cy="54" r="10" fill="none" stroke="#ff6a00" stroke-width="2" opacity="0.35"/>
+  <circle cx="78" cy="54" r="6" fill="#ff6a00"/>
+  <circle cx="78" cy="54" r="10" fill="none" stroke="#ff6a00" stroke-width="2" opacity="0.35"/>
 </svg>
 SVG_EOF
 
