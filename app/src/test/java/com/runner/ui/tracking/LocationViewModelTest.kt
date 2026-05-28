@@ -225,14 +225,12 @@ class LocationViewModelTest {
     }
 
     @Test
-    fun updateLocation_withGpsSpeed_convertsToKmh() {
+    fun updateLocation_withRealMovement_derivesSpeedFromPosition() {
         viewModel.startTracking()
-        val location = Location("test").apply {
-            latitude = 0.0; longitude = 0.0
-            speed = 10.0f // 10 m/s = 36 km/h
-        }
-        viewModel.updateLocation(location)
-        assertEquals(36.0f, viewModel.speedKmh.value!!, 0.01f)
+        // ~11.1 m north in 5 s = 2.22 m/s = 7.99 km/h
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0001; longitude = 0.0; time = 5000L })
+        assertEquals(8.0f, viewModel.speedKmh.value!!, 0.2f)
     }
 
     @Test
@@ -253,22 +251,25 @@ class LocationViewModelTest {
     }
 
     @Test
-    fun updateLocation_whenTracking_setsSpeedKmh() {
+    fun updateLocation_withGpsDrift_speedKmhIsNull() {
         viewModel.startTracking()
-        val location = Location("test").apply {
-            latitude = 0.0; longitude = 0.0
-            speed = 10.0f // 10 m/s = 36 km/h
+        val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }
+        // ~1 m north in 5 s = 0.2 m/s implied; speed field set so hasSpeed()=true,
+        // proving it is the velocity filter — not hasSpeed() — that produces null.
+        val loc2 = Location("test").apply {
+            latitude = 0.000009; longitude = 0.0; time = 5000L
+            speed = 0.6f
         }
-        viewModel.updateLocation(location)
-        assertEquals(36.0f, viewModel.speedKmh.value!!, 0.01f)
+        viewModel.updateLocation(loc1)
+        viewModel.updateLocation(loc2)
+        assertNull(viewModel.speedKmh.value)
     }
 
     @Test
     fun stopTracking_resetsSpeedKmhToNull() {
         viewModel.startTracking()
-        viewModel.updateLocation(Location("test").apply {
-            latitude = 0.0; longitude = 0.0; speed = 5.0f
-        })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0001; longitude = 0.0; time = 5000L })
         assertNotNull(viewModel.speedKmh.value)
         viewModel.stopTracking()
         assertNull(viewModel.speedKmh.value)
@@ -277,12 +278,22 @@ class LocationViewModelTest {
     @Test
     fun resetTimer_resetsSpeedKmhToNull() {
         viewModel.startTracking()
-        viewModel.updateLocation(Location("test").apply {
-            latitude = 0.0; longitude = 0.0; speed = 5.0f
-        })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L })
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0001; longitude = 0.0; time = 5000L })
         assertNotNull(viewModel.speedKmh.value)
         viewModel.stopTracking()
         viewModel.resetTimer()
         assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun updateLocation_withGpsDrift_doesNotAccumulateDistance() {
+        viewModel.startTracking()
+        val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }
+        // ~1 m north in 5 s = 0.2 m/s implied speed — typical GPS jitter when stationary
+        val loc2 = Location("test").apply { latitude = 0.000009; longitude = 0.0; time = 5000L }
+        viewModel.updateLocation(loc1)
+        viewModel.updateLocation(loc2)
+        assertEquals(0.0, viewModel.distanceKm.value!!, 0.0005)
     }
 }
