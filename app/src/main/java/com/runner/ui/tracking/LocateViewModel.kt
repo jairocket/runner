@@ -49,6 +49,7 @@ class LocationViewModel : ViewModel() {
         _locationHistory.clear()
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
+        _speedKmh.value = null
         _elapsedSeconds.value = 0L
         lastLocation = null
         trackingStartMs = SystemClock.elapsedRealtime()
@@ -61,6 +62,7 @@ class LocationViewModel : ViewModel() {
         _isTracking.value = false
         handler.removeCallbacks(timerRunnable)
         lastLocation = null
+        _speedKmh.value = null
     }
 
     fun resumeTracking() {
@@ -78,14 +80,15 @@ class LocationViewModel : ViewModel() {
         _elapsedSeconds.value = 0L
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
+        _speedKmh.value = null
         _locationHistory.clear()
         _trajectorySaved.value = Unit
     }
 
     fun updateLocation(location: Location) {
         locationLiveData.value = location
-        _speedKmh.value = if (location.hasSpeed()) location.speed * 3.6f else null
         if (_isTracking.value == true) {
+            _speedKmh.value = if (location.hasSpeed()) location.speed * 3.6f else null
             _locationHistory.add(location)
             lastLocation?.let { prev ->
                 val deltaM = prev.distanceTo(location)
