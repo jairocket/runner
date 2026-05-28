@@ -269,6 +269,7 @@ class LocationViewModelTest {
         viewModel.updateLocation(Location("test").apply {
             latitude = 0.0; longitude = 0.0; speed = 5.0f
         })
+        assertNotNull(viewModel.speedKmh.value)
         viewModel.stopTracking()
         assertNull(viewModel.speedKmh.value)
     }
@@ -279,6 +280,7 @@ class LocationViewModelTest {
         viewModel.updateLocation(Location("test").apply {
             latitude = 0.0; longitude = 0.0; speed = 5.0f
         })
+        assertNotNull(viewModel.speedKmh.value)
         viewModel.stopTracking()
         viewModel.resetTimer()
         assertNull(viewModel.speedKmh.value)
