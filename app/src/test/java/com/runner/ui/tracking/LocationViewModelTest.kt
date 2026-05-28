@@ -226,6 +226,7 @@ class LocationViewModelTest {
 
     @Test
     fun updateLocation_withGpsSpeed_convertsToKmh() {
+        viewModel.startTracking()
         val location = Location("test").apply {
             latitude = 0.0; longitude = 0.0
             speed = 10.0f // 10 m/s = 36 km/h
@@ -238,6 +239,48 @@ class LocationViewModelTest {
     fun updateLocation_withoutGpsSpeed_speedKmhIsNull() {
         val location = Location("test").apply { latitude = 0.0; longitude = 0.0 }
         viewModel.updateLocation(location)
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun updateLocation_whenNotTracking_doesNotSetSpeedKmh() {
+        val location = Location("test").apply {
+            latitude = 0.0; longitude = 0.0
+            speed = 10.0f
+        }
+        viewModel.updateLocation(location)
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun updateLocation_whenTracking_setsSpeedKmh() {
+        viewModel.startTracking()
+        val location = Location("test").apply {
+            latitude = 0.0; longitude = 0.0
+            speed = 10.0f // 10 m/s = 36 km/h
+        }
+        viewModel.updateLocation(location)
+        assertEquals(36.0f, viewModel.speedKmh.value!!, 0.01f)
+    }
+
+    @Test
+    fun stopTracking_resetsSpeedKmhToNull() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply {
+            latitude = 0.0; longitude = 0.0; speed = 5.0f
+        })
+        viewModel.stopTracking()
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun resetTimer_resetsSpeedKmhToNull() {
+        viewModel.startTracking()
+        viewModel.updateLocation(Location("test").apply {
+            latitude = 0.0; longitude = 0.0; speed = 5.0f
+        })
+        viewModel.stopTracking()
+        viewModel.resetTimer()
         assertNull(viewModel.speedKmh.value)
     }
 }
