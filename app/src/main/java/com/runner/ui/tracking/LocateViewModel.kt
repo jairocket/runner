@@ -88,11 +88,13 @@ class LocationViewModel : ViewModel() {
     fun updateLocation(location: Location) {
         locationLiveData.value = location
         if (_isTracking.value == true) {
-            _speedKmh.value = if (location.hasSpeed()) location.speed * 3.6f else null
+            _speedKmh.value = if (location.hasSpeed() && location.speed >= 0.5f) location.speed * 3.6f else null
             _locationHistory.add(location)
             lastLocation?.let { prev ->
                 val deltaM = prev.distanceTo(location)
-                if (deltaM > 0f) {
+                val timeDeltaS = (location.time - prev.time) / 1000.0
+                val isRealMovement = if (timeDeltaS > 0) deltaM / timeDeltaS >= 0.3 else deltaM > 0f
+                if (isRealMovement) {
                     val newDist = (_distanceKm.value ?: 0.0) + deltaM / 1000.0
                     _distanceKm.value = newDist
                     val secs = _elapsedSeconds.value ?: 0L
