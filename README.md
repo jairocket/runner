@@ -34,7 +34,7 @@ For instrumented tests (requires a connected device or emulator):
 
 ## Architecture
 
-Single-Activity / multi-Fragment app using the AndroidX Navigation Component with a bottom navigation bar and three tabs: **Tracking**, **Map**, and **History**.
+Single-Activity / multi-Fragment app using the AndroidX Navigation Component with a `BottomNavigationView` and three top-level tabs: **Tracking**, **Map**, and **History**.
 
 **Data flow:** `MainActivity` collects GPS fixes every 5 seconds via `FusedLocationProviderClient` → pushes each fix into `LocationViewModel` → `TrackingFragment` renders live metrics, `MapFragment` draws the route polyline on an osmdroid map.
 
@@ -44,8 +44,28 @@ Single-Activity / multi-Fragment app using the AndroidX Navigation Component wit
 |---|---|
 | `MainActivity.kt` | Permission handling, location client lifecycle |
 | `ui/tracking/LocateViewModel.kt` | Single source of truth for live location and run state |
-| `ui/tracking/TrackingFragment.kt` | Primary UI, observes ViewModel |
-| `ui/map/MapFragment.kt` | osmdroid map, draws route polyline |
-| `ui/history/HistoryFragment.kt` | Past runs list |
+| `ui/tracking/TrackingFragment.kt` | Primary UI — start/stop/resume controls and live metrics |
+| `ui/map/MapFragment.kt` | osmdroid map, draws route polyline, centers on current location |
+| `ui/history/HistoryFragment.kt` | Past runs list backed by mock data |
+| `ui/history/RunDetailFragment.kt` | Detail view for a past run — stats and route replay on osmdroid map |
+| `ui/history/RunDetailViewModel.kt` | Loads a single run by ID from the repository |
+| `ui/history/HistoryViewModel.kt` | Provides the list of past runs |
+
+**LocationViewModel state** (`ui/tracking/LocateViewModel.kt`):
+
+| Property | Description |
+|---|---|
+| `locationLiveData` | Latest GPS fix |
+| `locationHistory` | List of fixes recorded during the active run |
+| `isTracking` | Whether a run is in progress |
+| `elapsedSeconds` | Live elapsed time in seconds |
+| `distanceKm` | Accumulated distance (km) |
+| `paceSecPerKm` | Current pace in seconds per km |
+| `speedKmh` | Current speed in km/h |
+| `trajectorySaved` | One-shot event that tells `MapFragment` to clear the polyline |
+
+**Movement filtering:** fixes with GPS accuracy worse than 20 m are discarded. A segment is accepted as real movement only when the displacement exceeds both the GPS accuracy radius and a 0.5 m/s minimum speed threshold, preventing stationary noise from inflating distance.
+
+**History:** past runs are currently backed by mock data (`MockRunRepository`). Each `RunActivity` record stores date, duration, distance, pace, and a `List<Position>` (lat/lon pairs) for route replay.
 
 View Binding is enabled; Jetpack Compose is not used.
