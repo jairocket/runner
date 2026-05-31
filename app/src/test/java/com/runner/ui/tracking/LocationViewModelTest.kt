@@ -326,6 +326,19 @@ class LocationViewModelTest {
     }
 
     @Test
+    fun updateLocation_whenTracking_withLowAccuracyFix_doesNotUpdateLocationLiveData() {
+        viewModel.startTracking()
+        val loc1 = Location("test").apply { latitude = 1.0; longitude = 1.0; time = 0L }
+        viewModel.updateLocation(loc1)
+        val lowAccuracy = Location("test").apply {
+            latitude = 2.0; longitude = 2.0; time = 5000L
+            accuracy = 25f
+        }
+        viewModel.updateLocation(lowAccuracy)
+        assertEquals(1.0, viewModel.locationLiveData.value!!.latitude, 0.0001)
+    }
+
+    @Test
     fun updateLocation_withLowAccuracyFix_isIgnoredAndDoesNotCorruptLastLocation() {
         viewModel.startTracking()
         val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }

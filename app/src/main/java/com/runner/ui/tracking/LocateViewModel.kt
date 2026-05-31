@@ -86,10 +86,9 @@ class LocationViewModel : ViewModel() {
     }
 
     fun updateLocation(location: Location) {
-        locationLiveData.value = location
         if (_isTracking.value == true) {
-            _locationHistory.add(location)
             if (location.hasAccuracy() && location.accuracy > 20f) return
+            _locationHistory.add(location)
             val prev = lastLocation
             if (prev == null) {
                 lastLocation = location
@@ -111,6 +110,7 @@ class LocationViewModel : ViewModel() {
                 }
             }
         }
+        locationLiveData.value = location
     }
 
     override fun onCleared() {
