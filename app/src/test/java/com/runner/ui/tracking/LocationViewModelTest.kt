@@ -326,6 +326,21 @@ class LocationViewModelTest {
     }
 
     @Test
+    fun updateLocation_withHighVelocityWithinGpsAccuracyRadius_speedKmhIsNull() {
+        viewModel.startTracking()
+        val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }
+        // 8 m in 5 s = 1.6 m/s — above the 0.5 velocity threshold, but displacement is
+        // within the 15 m GPS accuracy radius, so it is indistinguishable from noise
+        val loc2 = Location("test").apply {
+            latitude = 8.0 / 111111.0; longitude = 0.0; time = 5000L
+            accuracy = 15f
+        }
+        viewModel.updateLocation(loc1)
+        viewModel.updateLocation(loc2)
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
     fun updateLocation_whenTracking_withLowAccuracyFix_doesNotUpdateLocationLiveData() {
         viewModel.startTracking()
         val loc1 = Location("test").apply { latitude = 1.0; longitude = 1.0; time = 0L }

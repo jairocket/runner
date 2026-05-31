@@ -95,7 +95,9 @@ class LocationViewModel : ViewModel() {
             } else {
                 val deltaM = prev.distanceTo(location)
                 val timeDeltaS = (location.time - prev.time) / 1000.0
-                val isRealMovement = if (timeDeltaS > 0) deltaM / timeDeltaS >= 0.5 else deltaM > 0f
+                val isRealMovement = if (timeDeltaS > 0)
+                    deltaM / timeDeltaS >= 0.5 && (!location.hasAccuracy() || deltaM > location.accuracy)
+                else deltaM > 0f
                 if (isRealMovement) {
                     _speedKmh.value = if (timeDeltaS > 0) (deltaM / timeDeltaS * 3.6).toFloat() else null
                     val newDist = (_distanceKm.value ?: 0.0) + deltaM / 1000.0
