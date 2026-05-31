@@ -5,35 +5,35 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- ECG main line -->
+    <!-- ECG main line (all points within safe circle r=36 from center 54,54) -->
     <path
-        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54"
+        android:pathData="M20,54 L28,54 L33,40 L38,66 L44,24 L50,54 L56,46 L62,54 L68,42 L72,34"
         android:fillColor="#00000000"
-        android:strokeColor="#ff6a00"
+        android:strokeColor="#C6FF00"
         android:strokeWidth="4.5"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"/>
 
     <!-- ECG glow pass -->
     <path
-        android:pathData="M8,54 L20,54 L26,36 L32,68 L40,20 L48,54 L56,48 L62,54 L70,42 L78,54"
+        android:pathData="M20,54 L28,54 L33,40 L38,66 L44,24 L50,54 L56,46 L62,54 L68,42 L72,34"
         android:fillColor="#00000000"
-        android:strokeColor="#ffaa60"
+        android:strokeColor="#C6FF00"
         android:strokeWidth="2"
         android:strokeLineCap="round"
         android:strokeLineJoin="round"
         android:strokeAlpha="0.35"/>
 
-    <!-- GPS dot: filled circle at (78,54) r=6 -->
+    <!-- GPS dot: filled circle at (72,34) r=5 -->
     <path
-        android:pathData="M72,54 A6,6 0 1,0 84,54 A6,6 0 1,0 72,54 Z"
-        android:fillColor="#ff6a00"/>
+        android:pathData="M67,34 A5,5 0 1,0 77,34 A5,5 0 1,0 67,34 Z"
+        android:fillColor="#C6FF00"/>
 
-    <!-- GPS ring: stroke circle at (78,54) r=10 -->
+    <!-- GPS ring: stroke circle at (72,34) r=8 -->
     <path
-        android:pathData="M68,54 A10,10 0 1,0 88,54 A10,10 0 1,0 68,54 Z"
+        android:pathData="M64,34 A8,8 0 1,0 80,34 A8,8 0 1,0 64,34 Z"
         android:fillColor="#00000000"
-        android:strokeColor="#ff6a00"
+        android:strokeColor="#C6FF00"
         android:strokeWidth="2"
         android:strokeAlpha="0.35"/>
 </vector>
