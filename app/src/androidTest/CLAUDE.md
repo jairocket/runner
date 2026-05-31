@@ -32,9 +32,9 @@ adb shell settings put global animator_duration_scale 1
 
 ## Test structure
 
-| File | Covers |
-|------|--------|
-| `MainActivityTest.kt` | Activity launch, bottom nav switching |
+| File                              | Covers                                 |
+|-----------------------------------|----------------------------------------|
+| `MainActivityTest.kt`             | Activity launch, bottom nav switching  |
 | `ui/tracking/TrackingFlowTest.kt` | Start / Stop / Resume / Save lifecycle |
 
 All tests use `ActivityScenarioRule<MainActivity>` + `GrantPermissionRule` to pre-grant location permission. Rules are declared with `GrantPermissionRule` first so it is applied before the Activity launches.

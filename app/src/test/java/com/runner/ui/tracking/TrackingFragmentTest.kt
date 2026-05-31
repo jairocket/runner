@@ -218,11 +218,10 @@ class TrackingFragmentTest {
         launch().onFragment { fragment ->
             val viewModel = getViewModel(fragment)
             viewModel.startTracking()
-            val location = Location("test").apply {
-                latitude = 0.0; longitude = 0.0
-                speed = 10.0f // 10 m/s = 36 km/h
-            }
-            viewModel.updateLocation(location)
+            val first = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0 }
+            val second = Location("test").apply { latitude = 0.0001; longitude = 0.0; time = 10_000 }
+            viewModel.updateLocation(first)
+            viewModel.updateLocation(second)
             val text = fragment.requireView()
                 .findViewById<TextView>(R.id.textSpeedValue).text.toString()
             assertNotEquals("--", text)
