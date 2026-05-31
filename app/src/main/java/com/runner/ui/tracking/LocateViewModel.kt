@@ -89,10 +89,14 @@ class LocationViewModel : ViewModel() {
         locationLiveData.value = location
         if (_isTracking.value == true) {
             _locationHistory.add(location)
-            lastLocation?.let { prev ->
+            if (location.hasAccuracy() && location.accuracy > 20f) return
+            val prev = lastLocation
+            if (prev == null) {
+                lastLocation = location
+            } else {
                 val deltaM = prev.distanceTo(location)
                 val timeDeltaS = (location.time - prev.time) / 1000.0
-                val isRealMovement = if (timeDeltaS > 0) deltaM / timeDeltaS >= 0.3 else deltaM > 0f
+                val isRealMovement = if (timeDeltaS > 0) deltaM / timeDeltaS >= 0.5 else deltaM > 0f
                 if (isRealMovement) {
                     _speedKmh.value = if (timeDeltaS > 0) (deltaM / timeDeltaS * 3.6).toFloat() else null
                     val newDist = (_distanceKm.value ?: 0.0) + deltaM / 1000.0
@@ -101,11 +105,11 @@ class LocationViewModel : ViewModel() {
                     if (newDist >= 0.01 && secs > 0) {
                         _paceSecPerKm.value = secs.toDouble() / newDist
                     }
+                    lastLocation = location
                 } else {
                     _speedKmh.value = null
                 }
             }
-            lastLocation = location
         }
     }
 

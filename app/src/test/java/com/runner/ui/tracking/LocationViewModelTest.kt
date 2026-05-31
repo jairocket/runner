@@ -296,4 +296,52 @@ class LocationViewModelTest {
         viewModel.updateLocation(loc2)
         assertEquals(0.0, viewModel.distanceKm.value!!, 0.0005)
     }
+
+    @Test
+    fun updateLocation_withVelocityBetween0_3And0_5MetersPerSecond_speedKmhIsNull() {
+        viewModel.startTracking()
+        // ~2 m north in 5 s = 0.4 m/s: above old 0.3 threshold, below new 0.5 threshold
+        viewModel.updateLocation(Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L })
+        viewModel.updateLocation(Location("test").apply { latitude = 2.0 / 111111.0; longitude = 0.0; time = 5000L })
+        assertNull(viewModel.speedKmh.value)
+    }
+
+    @Test
+    fun updateLocation_withDriftThenOscillation_doesNotAccumulateDistance() {
+        viewModel.startTracking()
+        // loc1: anchor
+        val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }
+        // loc2: ~2.4 m north in 5 s = 0.48 m/s — just below new 0.5 threshold, so filtered
+        //   without anchoring: lastLocation moves to loc2
+        //   with anchoring:    lastLocation stays at loc1
+        val loc2 = Location("test").apply { latitude = 2.4 / 111111.0; longitude = 0.0; time = 5000L }
+        // loc3: ~1 m south of origin — oscillation back
+        //   without anchoring: delta from loc2 = 3.4 m / 5 s = 0.68 m/s → passes → distance accumulates
+        //   with anchoring:    delta from loc1 = 1.0 m / 5 s = 0.20 m/s → filtered → distance stays 0
+        val loc3 = Location("test").apply { latitude = -1.0 / 111111.0; longitude = 0.0; time = 10000L }
+        viewModel.updateLocation(loc1)
+        viewModel.updateLocation(loc2)
+        viewModel.updateLocation(loc3)
+        assertEquals(0.0, viewModel.distanceKm.value!!, 0.001)
+    }
+
+    @Test
+    fun updateLocation_withLowAccuracyFix_isIgnoredAndDoesNotCorruptLastLocation() {
+        viewModel.startTracking()
+        val loc1 = Location("test").apply { latitude = 0.0; longitude = 0.0; time = 0L }
+        // Low-accuracy fix far from real position — should be ignored entirely
+        val lowAccuracy = Location("test").apply {
+            latitude = 0.0009; longitude = 0.0; time = 5000L
+            accuracy = 25f
+        }
+        // ~1 m north of origin in 10 s = 0.1 m/s — below threshold, should be filtered
+        // Without gate: compared to lowAccuracy (~100 m away) → huge spurious speed
+        // With gate:    compared to loc1 (origin) → 0.1 m/s → filtered → null
+        val loc3 = Location("test").apply { latitude = 0.000009; longitude = 0.0; time = 10000L }
+        viewModel.updateLocation(loc1)
+        viewModel.updateLocation(lowAccuracy)
+        viewModel.updateLocation(loc3)
+        assertNull(viewModel.speedKmh.value)
+        assertEquals(0.0, viewModel.distanceKm.value!!, 0.001)
+    }
 }
