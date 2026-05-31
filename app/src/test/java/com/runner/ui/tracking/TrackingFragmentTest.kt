@@ -217,6 +217,7 @@ class TrackingFragmentTest {
     fun speedKmh_observer_withGpsSpeed_updatesDisplay() {
         launch().onFragment { fragment ->
             val viewModel = getViewModel(fragment)
+            viewModel.startTracking()
             val location = Location("test").apply {
                 latitude = 0.0; longitude = 0.0
                 speed = 10.0f // 10 m/s = 36 km/h
