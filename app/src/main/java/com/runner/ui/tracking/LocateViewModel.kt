@@ -49,6 +49,7 @@ class LocationViewModel : ViewModel() {
         _locationHistory.clear()
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
+        _speedKmh.value = null
         _elapsedSeconds.value = 0L
         lastLocation = null
         trackingStartMs = SystemClock.elapsedRealtime()
@@ -61,6 +62,7 @@ class LocationViewModel : ViewModel() {
         _isTracking.value = false
         handler.removeCallbacks(timerRunnable)
         lastLocation = null
+        _speedKmh.value = null
     }
 
     fun resumeTracking() {
@@ -78,28 +80,39 @@ class LocationViewModel : ViewModel() {
         _elapsedSeconds.value = 0L
         _distanceKm.value = 0.0
         _paceSecPerKm.value = null
+        _speedKmh.value = null
         _locationHistory.clear()
         _trajectorySaved.value = Unit
     }
 
     fun updateLocation(location: Location) {
-        locationLiveData.value = location
-        _speedKmh.value = if (location.hasSpeed()) location.speed * 3.6f else null
         if (_isTracking.value == true) {
+            if (location.hasAccuracy() && location.accuracy > 20f) return
             _locationHistory.add(location)
-            lastLocation?.let { prev ->
+            val prev = lastLocation
+            if (prev == null) {
+                lastLocation = location
+            } else {
                 val deltaM = prev.distanceTo(location)
-                if (deltaM > 0f) {
+                val timeDeltaS = (location.time - prev.time) / 1000.0
+                val isRealMovement = if (timeDeltaS > 0)
+                    deltaM / timeDeltaS >= 0.5 && (!location.hasAccuracy() || deltaM > location.accuracy)
+                else deltaM > 0f
+                if (isRealMovement) {
+                    _speedKmh.value = if (timeDeltaS > 0) (deltaM / timeDeltaS * 3.6).toFloat() else null
                     val newDist = (_distanceKm.value ?: 0.0) + deltaM / 1000.0
                     _distanceKm.value = newDist
                     val secs = _elapsedSeconds.value ?: 0L
                     if (newDist >= 0.01 && secs > 0) {
                         _paceSecPerKm.value = secs.toDouble() / newDist
                     }
+                    lastLocation = location
+                } else {
+                    _speedKmh.value = null
                 }
             }
-            lastLocation = location
         }
+        locationLiveData.value = location
     }
 
     override fun onCleared() {
