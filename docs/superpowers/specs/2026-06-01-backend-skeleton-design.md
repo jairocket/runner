@@ -50,15 +50,15 @@ The dependency graph is final — adding code to `domain` and `infra` later requ
 
 ## Tech Stack
 
-| Concern | Library |
-|---|---|
-| HTTP server | Ktor 3.x |
-| JSON | `kotlinx.serialization` |
-| DI | Koin |
-| SQL | Exposed (Kotlin DSL) + HikariCP |
-| Database | Postgres (local) |
-| Config | `dotenv-kotlin` (reads `.env`) |
-| Testing | JUnit 5 + `ktor-server-test-host` |
+| Concern     | Library                           |
+|-------------|-----------------------------------|
+| HTTP server | Ktor 3.x                          |
+| JSON        | `kotlinx.serialization`           |
+| DI          | Koin                              |
+| SQL         | Exposed (Kotlin DSL) + HikariCP   |
+| Database    | Postgres (local)                  |
+| Config      | `dotenv-kotlin` (reads `.env`)    |
+| Testing     | JUnit 5 + `ktor-server-test-host` |
 
 Exposed's DSL gives SQL control with Kotlin syntax and will swap cleanly behind a port during the hexagonal refactor.
 
