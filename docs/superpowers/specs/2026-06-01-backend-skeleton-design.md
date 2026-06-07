@@ -14,21 +14,24 @@ The Runner Android app currently uses `MockRunRepository` with no real persisten
 
 ## Directory Layout
 
-The backend lives as a sibling to the Android project:
+The backend lives as a sub-directory of the Android project, as its own independent Gradle build:
 
 ```
-runner-backend/                  ← sibling to Runner/
-  app/                           ← runnable Ktor server; entry point, DI wiring, routes
-  domain/                        ← empty shell; will hold ports + entities in future
-  infra/                         ← empty shell; will hold DB + HTTP adapters in future
+runner/runner-backend/           ← sub-directory of runner/, independent Gradle build
+  modules/
+    app/                         ← runnable Ktor server; entry point, DI wiring, routes
+    domain/                      ← empty shell; will hold ports + entities in future
+    infra/                       ← empty shell; will hold DB + HTTP adapters in future
   gradle/
     libs.versions.toml           ← shared version catalog
   build.gradle.kts               ← root build, shared plugin config
-  settings.gradle.kts            ← declares app, domain, infra subprojects
+  settings.gradle.kts            ← declares app, domain, infra subprojects (mapped to modules/*)
   gradlew / gradlew.bat
   .env.example                   ← DATABASE_URL, PORT
   .gitignore                     ← excludes .env
 ```
+
+`app`, `domain`, and `infra` are grouped under `modules/` to keep them visually distinct from Gradle's generated/tooling directories (`build/`, `.gradle/`, `gradle/`) at the project root — `settings.gradle.kts` maps each subproject's `projectDir` accordingly.
 
 ---
 

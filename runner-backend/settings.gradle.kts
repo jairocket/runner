@@ -8,3 +8,6 @@ dependencyResolutionManagement {
 }
 
 include(":app", ":domain", ":infra")
+project(":app").projectDir = file("modules/app")
+project(":domain").projectDir = file("modules/domain")
+project(":infra").projectDir = file("modules/infra")

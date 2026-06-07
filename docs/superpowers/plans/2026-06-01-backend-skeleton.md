@@ -14,6 +14,8 @@
 
 **All tasks COMPLETE.** `runner-backend/` now lives at `runner/runner-backend/`, committed to runner's git repo (`46b813a chore: move runner-backend into runner as a sub-directory`), and the end-to-end smoke test passed against a Podman Postgres container.
 
+**Follow-up restructure:** `app`, `domain`, and `infra` were moved under `runner-backend/modules/` to keep them visually distinct from Gradle's generated/tooling directories (`build/`, `.gradle/`, `gradle/`) at the project root. `settings.gradle.kts` maps each subproject's `projectDir` to `modules/<name>` accordingly. Verified `./gradlew :app:test` still passes after the move.
+
 Commits previously in standalone `runner-backend` (newest first):
 - `feat: add Application entry point`
 - `feat: add Koin DI plugin`
@@ -38,18 +40,18 @@ Commits previously in standalone `runner-backend` (newest first):
 | `runner-backend/gradle/wrapper/gradle-wrapper.properties` | Gradle wrapper version |
 | `runner-backend/.env.example` | Template with DATABASE_URL and PORT |
 | `runner-backend/.gitignore` | Excludes `.env`, `build/`, `.gradle/` |
-| `runner-backend/domain/build.gradle.kts` | Empty shell — pure Kotlin, no deps |
-| `runner-backend/domain/src/main/kotlin/com/runner/domain/.gitkeep` | Keeps source dir in git |
-| `runner-backend/infra/build.gradle.kts` | Empty shell — depends on `domain` |
-| `runner-backend/infra/src/main/kotlin/com/runner/infra/.gitkeep` | Keeps source dir in git |
-| `runner-backend/app/build.gradle.kts` | App module — all runtime dependencies |
-| `runner-backend/app/src/main/kotlin/com/runner/Application.kt` | `main()` entry point |
-| `runner-backend/app/src/main/kotlin/com/runner/plugins/Serialization.kt` | Installs ContentNegotiation + JSON |
-| `runner-backend/app/src/main/kotlin/com/runner/plugins/Database.kt` | HikariCP + Exposed init, fails fast if DB unreachable |
-| `runner-backend/app/src/main/kotlin/com/runner/plugins/DI.kt` | Koin module definitions |
-| `runner-backend/app/src/main/kotlin/com/runner/plugins/Routing.kt` | Registers all route blocks |
-| `runner-backend/app/src/main/kotlin/com/runner/routes/HealthRoute.kt` | `GET /health` → 200 OK |
-| `runner-backend/app/src/test/kotlin/com/runner/routes/HealthRouteTest.kt` | Ktor test-host test for `/health` |
+| `runner-backend/modules/domain/build.gradle.kts` | Empty shell — pure Kotlin, no deps |
+| `runner-backend/modules/domain/src/main/kotlin/com/runner/domain/.gitkeep` | Keeps source dir in git |
+| `runner-backend/modules/infra/build.gradle.kts` | Empty shell — depends on `domain` |
+| `runner-backend/modules/infra/src/main/kotlin/com/runner/infra/.gitkeep` | Keeps source dir in git |
+| `runner-backend/modules/app/build.gradle.kts` | App module — all runtime dependencies |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/Application.kt` | `main()` entry point |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/plugins/Serialization.kt` | Installs ContentNegotiation + JSON |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/plugins/Database.kt` | HikariCP + Exposed init, fails fast if DB unreachable |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/plugins/DI.kt` | Koin module definitions |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/plugins/Routing.kt` | Registers all route blocks |
+| `runner-backend/modules/app/src/main/kotlin/com/runner/routes/HealthRoute.kt` | `GET /health` → 200 OK |
+| `runner-backend/modules/app/src/test/kotlin/com/runner/routes/HealthRouteTest.kt` | Ktor test-host test for `/health` |
 
 All paths above are relative to `runner/` (i.e. `runner/runner-backend/…`).
 
@@ -183,11 +185,11 @@ PORT=8080
 
 > Note: `dotenv-kotlin` resolves `.env` relative to the JVM process's working
 > directory. The Ktor Gradle plugin's `:app:run` task launches the process with
-> `app/` as its working directory (not the `runner-backend/` root), so `.env`
-> must also be copied to `runner-backend/app/.env` or the server fails fast with
+> `modules/app/` as its working directory (not the `runner-backend/` root), so `.env`
+> must also be copied to `runner-backend/modules/app/.env` or the server fails fast with
 > `jdbcUrl is required with driverClassName` (DATABASE_URL resolves to null):
 > ```bash
-> cp runner-backend/.env runner-backend/app/.env
+> cp runner-backend/.env runner-backend/modules/app/.env
 > ```
 > Both paths are covered by `runner-backend/.gitignore`.
 
