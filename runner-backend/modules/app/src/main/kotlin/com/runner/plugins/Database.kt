@@ -1,5 +1,6 @@
 package com.runner.plugins
 
+import com.runner.db.runMigrations
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.github.cdimascio.dotenv.dotenv
@@ -23,6 +24,7 @@ fun Application.configureDatabase() {
     }
 
     val dataSource = HikariDataSource(config)
+    runMigrations(dataSource)
     Database.connect(dataSource)
     logger.info("Database connected: $dbUrl")
 }
