@@ -14,24 +14,24 @@ Add Flyway-based database migrations and Exposed table definitions for `users` a
 
 ### users
 
-| Column        | Type                     | Constraints         |
-|---------------|--------------------------|---------------------|
-| id            | UUID                     | PK, not null        |
-| google_sub    | text                     | unique, not null    |
-| email         | text                     | not null            |
-| display_name  | text                     | not null            |
-| created_at    | timestamp with time zone | not null, default now() |
+| Column       | Type                     | Constraints             |
+|--------------|--------------------------|-------------------------|
+| id           | UUID                     | PK, not null            |
+| google_sub   | text                     | unique, not null        |
+| email        | text                     | not null                |
+| display_name | text                     | not null                |
+| created_at   | timestamp with time zone | not null, default now() |
 
 ### refresh_tokens
 
-| Column      | Type                     | Constraints                        |
-|-------------|--------------------------|-------------------------------------|
-| id          | UUID                     | PK, not null                        |
-| user_id     | UUID                     | FK → users(id), not null            |
-| token_hash  | text                     | not null                            |
-| expires_at  | timestamp with time zone | not null                            |
-| revoked_at  | timestamp with time zone | nullable                            |
-| created_at  | timestamp with time zone | not null, default now()             |
+| Column     | Type                     | Constraints              |
+|------------|--------------------------|--------------------------|
+| id         | UUID                     | PK, not null             |
+| user_id    | UUID                     | FK → users(id), not null |
+| token_hash | text                     | not null                 |
+| expires_at | timestamp with time zone | not null                 |
+| revoked_at | timestamp with time zone | nullable                 |
+| created_at | timestamp with time zone | not null, default now()  |
 
 ## Architecture
 
