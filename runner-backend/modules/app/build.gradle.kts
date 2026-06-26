@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.postgres.driver)
     implementation(libs.dotenv)
     implementation(libs.logback)
+    implementation(libs.nimbus.jose.jwt)
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(kotlin("test"))
