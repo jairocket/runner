@@ -10,6 +10,7 @@ logback = "1.5.18"
 junit = "5.11.4"
 flyway        = "11.8.2"
 testcontainers = "1.21.1"
+nimbus-jose-jwt = "9.37.3"
 
 [libraries]
 ktor-server-core        = { module = "io.ktor:ktor-server-core",                 version.ref = "ktor" }
@@ -32,6 +33,7 @@ flyway-database-postgresql    = { module = "org.flywaydb:flyway-database-postgre
 testcontainers-bom            = { module = "org.testcontainers:testcontainers-bom",                     version.ref = "testcontainers" }
 testcontainers-junit-jupiter  = { module = "org.testcontainers:junit-jupiter",                          version.ref = "testcontainers" }
 testcontainers-postgresql     = { module = "org.testcontainers:postgresql",                             version.ref = "testcontainers" }
+nimbus-jose-jwt               = { module = "com.nimbusds:nimbus-jose-jwt",                                version.ref = "nimbus-jose-jwt" }
 
 [plugins]
 kotlin-jvm           = { id = "org.jetbrains.kotlin.jvm",                       version.ref = "kotlin" }
