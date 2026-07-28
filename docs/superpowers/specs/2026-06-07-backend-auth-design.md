@@ -137,7 +137,7 @@ New plugin `plugins/Auth.kt` — installs Ktor's `Authentication` feature with a
 
 New service-layer pieces (still in `app` for now — hexagonal layers come later, per the backend skeleton spec):
 - `GoogleTokenVerifier` — JWKS fetch/cache + signature check against Google's published keys
-- `TokenService` — mints access/refresh JWT pairs, hashes/stores/rotates refresh tokens
+- `TokenService` — mints access/refresh JWT pairs (HS256, signed with a shared secret), hashes/stores/rotates refresh tokens. Persistence is abstracted behind a `RefreshTokenStore` port (`save`/`findByHash`/`revoke`/`revokeAllForUser`) rather than talking to Exposed directly, so `TokenServiceTest` can run against an in-memory fake — matching `TokenServiceTest`'s isolation requirement in section 5. An Exposed-backed `RefreshTokenStore` implementation and DI/route wiring are still open; `TokenService` itself is implemented and unit-tested but not yet wired into `plugins/DI.kt` or a route.
 - `UserRepository` / `RunRepository` (Exposed-backed) — find-or-create user, query runs scoped to `user_id`
 
 This shape mirrors the existing `routes/` + `plugins/` convention, isolates Google-specific logic in one verifier class (easy to extend to other providers later), and ensures every data-touching route is scoped by the JWT's `sub` — a user can only ever see their own runs, enforced at the query level, not just the route level.
@@ -152,7 +152,7 @@ This shape mirrors the existing `routes/` + `plugins/` convention, isolates Goog
 
 **Rotation on refresh** (standard defense against stolen refresh tokens):
 - Each `POST /auth/refresh` validates the presented token, **revokes it**, and issues a brand-new access+refresh pair
-- If a *revoked* refresh token is ever presented again — a replay signal — the backend revokes the *entire* token family for that user, forcing a fresh Google sign-in everywhere
+- If a *revoked* refresh token is ever presented again — a replay signal — the backend revokes the *entire* token family for that user, forcing a fresh Google sign-in everywhere. Since `refresh_tokens` has no separate family/lineage column, "family" is implemented as *every currently-unrevoked refresh token belonging to that `user_id`* — simpler than a lineage chain and sufficient to force re-authentication on all devices.
 
 **Error responses** (consistent JSON shape, e.g. `{ "error": "invalid_token" }`):
 
